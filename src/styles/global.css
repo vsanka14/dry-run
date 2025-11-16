@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  background-color: white;
+  color: rgb(17, 24, 39);
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: rgb(3, 7, 18);
+    color: rgb(243, 244, 246);
+  }
+}

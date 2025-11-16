@@ -1,0 +1,40 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "A minimal blog for coding concepts" } =
+  Astro.props;
+import "../styles/global.css";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="max-w-3xl mx-auto px-4 py-12">
+      <header class="mb-12">
+        <a
+          href="/"
+          class="text-2xl font-bold hover:opacity-70 transition-opacity"
+        >
+          Blog
+        </a>
+      </header>
+      <main>
+        <slot />
+      </main>
+      <footer
+        class="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800 text-sm opacity-60"
+      >
+        <p>A minimal coding blog</p>
+      </footer>
+    </div>
+  </body>
+</html>
