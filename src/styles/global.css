@@ -1,19 +1,204 @@
 @import "tailwindcss";
 
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
 }
 
-body {
-  background-color: white;
-  color: rgb(17, 24, 39);
-  min-height: 100vh;
-  font-family: system-ui, -apple-system, sans-serif;
+@theme {
+  /* Neo-brutalism color palette */
+
+  /* Backgrounds - stark and bold */
+  --color-primary: #fffef0;
+  --color-secondary: #fefce8;
+  --color-tertiary: #fef9c3;
+
+  /* The signature brutal black */
+  --color-brutal-black: #1a1a1a;
+
+  /* Border - always thick and black */
+  --color-border-default: #1a1a1a;
+  --color-border-light: #1a1a1a;
+
+  /* Text colors */
+  --color-on-primary: #1a1a1a;
+  --color-on-secondary: #374151;
+  --color-muted: #6b7280;
+
+  /* Accent colors - punchy and saturated */
+  --color-accent-cyan: #06b6d4;
+  --color-accent-magenta: #ec4899;
+  --color-accent-green: #10b981;
+  --color-accent-yellow: #facc15;
+  --color-accent-orange: #f97316;
+  --color-accent-purple: #8b5cf6;
+  --color-accent-red: #ef4444;
+  --color-result: #f97316;
+
+  /* Night Owl theme colors for code blocks */
+  --color-night-owl-bg: #011627;
+  --color-night-owl-text: #d6deeb;
+  --color-night-owl-keyword: #c792ea;
+  --color-night-owl-string: #ecc48d;
+  --color-night-owl-function: #82aaff;
+  --color-night-owl-number: #f78c6c;
+  --color-night-owl-comment: #637777;
+  --color-night-owl-property: #80cbc4;
+  --color-night-owl-boolean: #ff5874;
+
+  /* Shadow offset for brutal effect */
+  --shadow-brutal: 4px 4px 0px #1a1a1a;
+  --shadow-brutal-sm: 2px 2px 0px #1a1a1a;
+  --shadow-brutal-lg: 6px 6px 0px #1a1a1a;
+
+  /* Font - chunky and readable */
+  --font-display: "Space Mono", "Courier New", monospace;
+  --font-body: "Inter", system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: rgb(3, 7, 18);
-    color: rgb(243, 244, 246);
+/* Export CSS variables for backward compatibility */
+:root {
+  --color-bg-primary: var(--color-primary);
+  --color-bg-secondary: var(--color-secondary);
+  --color-bg-tertiary: var(--color-tertiary);
+  --color-border: var(--color-border-default);
+  --color-text-primary: var(--color-on-primary);
+  --color-text-secondary: var(--color-on-secondary);
+  --color-text-tertiary: var(--color-muted);
+  --color-accent-1: var(--color-accent-cyan);
+  --color-accent-2: var(--color-accent-magenta);
+  --color-accent-3: var(--color-accent-green);
+}
+
+@layer base {
+  html {
+    @apply bg-primary;
   }
+
+  body {
+    @apply font-sans bg-primary text-on-primary;
+    background-image: radial-gradient(circle, #1a1a1a 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* Code blocks - Night Owl theme */
+  pre {
+    @apply border-3 border-on-primary shadow-brutal-sm overflow-x-auto my-6 p-5 rounded-none;
+    background-color: var(--color-night-owl-bg) !important;
+    color: var(--color-night-owl-text) !important;
+  }
+
+  pre code {
+    @apply border-none bg-transparent p-0 font-mono;
+    color: var(--color-night-owl-text) !important;
+  }
+
+  /* Inline code */
+  :not(pre) > code {
+    @apply bg-accent-yellow border-2 border-on-primary font-mono text-on-primary px-1.5 py-0.5 text-sm font-semibold;
+  }
+
+  ::selection {
+    @apply bg-accent-yellow text-on-primary;
+  }
+}
+
+@layer components {
+  .brutal-border {
+    @apply border-3 border-on-primary;
+  }
+
+  .brutal-shadow {
+    @apply shadow-brutal;
+  }
+
+  .brutal-shadow-sm {
+    @apply shadow-brutal-sm;
+  }
+
+  .brutal-shadow-lg {
+    @apply shadow-brutal-lg;
+  }
+
+  .brutal-hover {
+    @apply transition-all duration-150 ease-out;
+  }
+
+  .brutal-hover:hover {
+    @apply -translate-x-0.5 -translate-y-0.5 shadow-brutal-lg;
+  }
+
+  .brutal-hover:active {
+    @apply translate-x-0.5 translate-y-0.5 shadow-none;
+  }
+
+  .brutal-btn {
+    @apply border-3 border-on-primary shadow-brutal font-bold uppercase tracking-wide transition-all duration-100 ease-out;
+  }
+
+  .brutal-btn:hover {
+    @apply -translate-x-0.5 -translate-y-0.5 shadow-brutal-lg;
+  }
+
+  .brutal-btn:active {
+    @apply translate-x-0.5 translate-y-0.5 shadow-none;
+  }
+
+  .brutal-card {
+    @apply bg-secondary border-3 border-on-primary shadow-brutal;
+  }
+}
+
+@layer utilities {
+  .animate-fadeIn {
+    animation: fadeIn 0.4s ease-out;
+  }
+
+  .animate-shake {
+    animation: shake 0.3s ease-in-out;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+
+/* Scrollbar styling - browser-specific, can't use @apply */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-primary);
+  border-left: 3px solid var(--color-brutal-black);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-accent-yellow);
+  border: 3px solid var(--color-brutal-black);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-orange);
 }

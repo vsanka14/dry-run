@@ -5,29 +5,48 @@ import { getCollection } from "astro:content";
 const posts = (await getCollection("blog")).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
+
+const accentColors = [
+  "bg-accent-yellow",
+  "bg-accent-cyan", 
+  "bg-accent-magenta",
+  "bg-accent-green",
+  "bg-accent-orange",
+  "bg-accent-purple",
+];
 ---
 
 <Layout title="Blog">
-  <h1 class="text-3xl font-bold mb-8">Posts</h1>
+  <h1
+    class="text-4xl md:text-5xl font-black mb-10 uppercase tracking-tight inline-block px-4 py-2 bg-accent-magenta brutal-border brutal-shadow -rotate-1"
+  >
+    Posts
+  </h1>
 
-  <div class="space-y-6">
+  <div class="space-y-8 mt-8">
     {
-      posts.map((post) => (
-        <article class="border-b border-gray-200 dark:border-gray-800 pb-6">
-          <a href={`/blog/${post.slug}`} class="group">
-            <h2 class="text-xl font-semibold mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+      posts.map((post, index) => (
+        <article
+          class={`brutal-card p-6 brutal-hover ${accentColors[index % accentColors.length]}`}
+          style={`transform: rotate(${index % 2 === 0 ? '0.5' : '-0.5'}deg)`}
+        >
+          <a href={`/blog/${post.slug}`} class="block">
+            <h2 class="text-2xl font-black mb-3 uppercase tracking-tight">
               {post.data.title}
             </h2>
-            <p class="text-gray-600 dark:text-gray-400 mb-2">
+            <p class="text-on-secondary mb-4 font-medium leading-relaxed">
               {post.data.description}
             </p>
-            <time class="text-sm text-gray-500 dark:text-gray-500">
-              {post.data.date.toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </time>
+            <div class="flex items-center justify-between">
+              <time class="text-sm font-bold uppercase tracking-wider px-3 py-1 bg-primary brutal-border text-on-primary inline-block">
+                {post.data.date.toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
+              </time>
+              <span class="font-black text-lg">→</span>
+            </div>
           </a>
         </article>
       ))

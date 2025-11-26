@@ -1,0 +1,59 @@
+---
+title: "Currying in JavaScript"
+description: "Understanding function currying with a step-by-step breakdown"
+date: 2025-11-15
+---
+
+import { RegularFunctionViz, CurriedCarousel } from "./components/Currying.jsx";
+
+## What is Currying?
+
+Imagine you have a function that needs three numbers to work, like `add(a, b, c)`. Normally, you'd call it like `add(2, 3, 5)` and get the answer right away.
+
+<RegularFunctionViz client:load />
+
+Currying lets you break this into smaller steps—you can call `curriedAdd(2)` first, which gives you back a new function. Then you call that function with `(3)`, which gives you yet another function. Finally, you call that last function with `(5)` to get your answer. It's like passing ingredients one at a time instead of all at once!
+
+<CurriedCarousel client:load />
+
+Currying is particularly useful when you want to create specialized functions from more general ones. For example, you might create a `logWithPrefix` function by partially applying a logger with a specific prefix:
+
+```javascript
+const log = (prefix, message) => {
+  console.log(`[${prefix}] ${message}`);
+};
+
+const logWithPrefix = (prefix) => (message) => log(prefix, message);
+
+const logError = logWithPrefix("ERROR");
+const logInfo = logWithPrefix("INFO");
+
+logError("Something went wrong!"); // [ERROR] Something went wrong!
+logInfo("Process completed"); // [INFO] Process completed
+```
+
+## Implementation
+
+The key idea is to check if we have enough arguments yet. If we do, we call the original function. If not, we return a new function that "remembers" the arguments we've collected so far and waits for more. We keep doing this until we have all the arguments needed, then finally execute the function.
+
+```javascript
+function curry(func) {
+  return function curried(...args) {
+    if (args.length >= func.length) {
+      return func.apply(this, args);
+    } else {
+      return function nextCurried(...args2) {
+        return curried.apply(this, args.concat(args2));
+      };
+    }
+  };
+}
+
+const add = (a, b, c) => {
+  return a + b + c;
+};
+
+const curriedAdd = curry(add);
+const result = curriedAdd(2)(3)(5);
+console.log(result); // 10
+```
