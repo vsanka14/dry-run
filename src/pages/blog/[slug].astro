@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
+import { Logo } from "../../components/Logo.jsx";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -16,41 +17,37 @@ const { Content } = await post.render();
 
 <Layout title={post.data.title} description={post.data.description}>
   <main>
-  <article>
-    <header class="mb-12">
-        <a href="/" class="back-link group inline-flex items-center gap-2 hover:no-underline mb-6 text-text-muted hover:text-accent transition-colors" aria-label="Back to posts">
-          <svg class="w-5 h-5 overflow-visible" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M20 12H4M9 17l-5-5 5-5" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-          <span class="text-sm">back to posts</span>
-        </a>
-      <h1 class="text-2xl md:text-3xl font-semibold text-text mb-4">
-        {post.data.title}
-      </h1>
+    <article>
+      <header class="mb-12">
+        <h1 class="text-2xl md:text-3xl font-semibold text-text mb-4">
+          {post.data.title}
+        </h1>
         <div class="flex items-center gap-4">
-      <time class="text-sm text-text-muted">
-        {
-          post.data.date.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })
-        }
-      </time>
-          {post.data.tags && post.data.tags.length > 0 && (
-            <div class="flex gap-2">
-              {post.data.tags.map((tag: string) => (
-                <span class="text-xs px-2 py-0.5 bg-accent/20 text-accent rounded">
-                  {tag}
-                </span>
-              ))}
-            </div>
-          )}
+          <time class="text-sm text-text-muted">
+            {
+              post.data.date.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })
+            }
+          </time>
+          {
+            post.data.tags && post.data.tags.length > 0 && (
+              <div class="flex gap-2">
+                {post.data.tags.map((tag: string) => (
+                  <span class="text-xs px-2 py-0.5 bg-accent/20 text-accent rounded">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )
+          }
         </div>
-    </header>
+      </header>
 
-    <div
-      class="
+      <div
+        class="
         [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-text [&_h2]:mt-12 [&_h2]:mb-4
         [&_h3]:text-lg [&_h3]:font-medium [&_h3]:text-text [&_h3]:mt-8 [&_h3]:mb-3
         [&_p]:mb-6 [&_p]:leading-relaxed [&_p]:text-text
@@ -58,9 +55,15 @@ const { Content } = await post.render();
         [&_li]:mb-2 [&_li]:text-text
         [&_strong]:font-semibold [&_strong]:text-accent
         [&_blockquote]:border-l-2 [&_blockquote]:border-accent [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-text-muted"
-    >
-      <Content />
-    </div>
-  </article>
+      >
+        <Content />
+      </div>
+    </article>
+
+    <hr class="border-secondary my-12" />
+
+    <footer>
+      <Logo />
+    </footer>
   </main>
 </Layout>
