@@ -135,7 +135,7 @@ export const RegularFunctionViz = () => {
         <span className="text-sm text-text">Regular Function</span>
         <span className="text-xs text-text-muted">— all args at once</span>
       </div>
-      <div className="flex flex-col items-center gap-4 animate-fadeIn py-6 px-4 bg-primary">
+      <div className="flex flex-col items-center gap-4 py-6 px-4 bg-primary">
         {/* Function call */}
         <div className="flex items-center gap-1 text-sm font-mono">
           <span className="text-text-muted">add</span>
