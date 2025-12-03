@@ -2,7 +2,7 @@ export function Logo({ className = "" }) {
   return (
     <a
       href="/"
-      className={`text-3xl font-bold text-text hover:no-underline tracking-wide flex items-center gap-3 group ${className}`}
+      className={`text-3xl font-extrabold text-text hover:no-underline tracking-wide flex items-center gap-3 group ${className}`}
     >
       <svg
         className="w-7 h-7 text-accent translate-y-[0.1em]"
