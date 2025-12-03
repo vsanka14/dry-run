@@ -15,50 +15,52 @@ const { Content } = await post.render();
 ---
 
 <Layout title={post.data.title} description={post.data.description}>
-  <article class="max-w-none">
-    <header class="mb-10">
-      <h1
-        class="text-3xl md:text-4xl font-black mb-6 uppercase tracking-tight inline-block px-4 py-2 bg-accent-cyan brutal-border brutal-shadow"
-      >
+  <main>
+  <article>
+    <header class="mb-12">
+        <a href="/" class="back-link group inline-flex items-center gap-2 hover:no-underline mb-6 text-text-muted hover:text-accent transition-colors" aria-label="Back to posts">
+          <svg class="w-5 h-5 overflow-visible" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path class="back-arrow" d="M20 12H4M9 17l-5-5 5-5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span class="text-sm">back to posts</span>
+        </a>
+      <h1 class="text-2xl md:text-3xl font-semibold text-text mb-4">
         {post.data.title}
       </h1>
-      <div class="mt-4">
-        <time
-          class="text-sm font-bold uppercase tracking-wider px-3 py-1 bg-accent-yellow brutal-border text-on-primary inline-block"
-        >
-          {
-            post.data.date.toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })
-          }
-        </time>
-      </div>
+        <div class="flex items-center gap-4">
+      <time class="text-sm text-text-muted">
+        {
+          post.data.date.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })
+        }
+      </time>
+          {post.data.tags && post.data.tags.length > 0 && (
+            <div class="flex gap-2">
+              {post.data.tags.map((tag: string) => (
+                <span class="text-xs px-2 py-0.5 bg-secondary/60 text-text-muted rounded">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
     </header>
 
     <div
-      class="prose-brutal
-        [&_h2]:text-2xl [&_h2]:font-black [&_h2]:mt-10 [&_h2]:mb-4 [&_h2]:uppercase [&_h2]:tracking-tight [&_h2]:inline-block [&_h2]:px-3 [&_h2]:py-1 [&_h2]:bg-accent-green [&_h2]:brutal-border
-        [&_h3]:text-xl [&_h3]:font-bold [&_h3]:mt-8 [&_h3]:mb-3 [&_h3]:uppercase [&_h3]:tracking-tight
-        [&_p]:mb-5 [&_p]:leading-7 [&_p]:text-on-primary
-        [&_ul]:mb-5 [&_ul]:ml-6 [&_ol]:mb-5 [&_ol]:ml-6
-        [&_li]:mb-2 [&_li]:font-medium
-        [&_a]:text-on-primary [&_a]:font-bold [&_a]:underline [&_a]:decoration-4 [&_a]:underline-offset-2 [&_a]:decoration-accent-magenta [&_a]:hover:bg-accent-magenta [&_a]:hover:no-underline [&_a]:px-1 [&_a]:transition-colors
-        [&_strong]:font-black
-        [&_pre]:p-5 [&_pre]:brutal-border [&_pre]:brutal-shadow-sm [&_pre]:overflow-x-auto [&_pre]:my-6
-        [&_pre_code]:p-0"
+      class="
+        [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-text [&_h2]:mt-12 [&_h2]:mb-4
+        [&_h3]:text-lg [&_h3]:font-medium [&_h3]:text-text [&_h3]:mt-8 [&_h3]:mb-3
+        [&_p]:mb-6 [&_p]:leading-relaxed [&_p]:text-text
+        [&_ul]:mb-6 [&_ul]:ml-6 [&_ul]:list-disc [&_ol]:mb-6 [&_ol]:ml-6 [&_ol]:list-decimal
+        [&_li]:mb-2 [&_li]:text-text
+        [&_strong]:font-semibold [&_strong]:text-accent
+        [&_blockquote]:border-l-2 [&_blockquote]:border-accent [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-text-muted"
     >
       <Content />
     </div>
   </article>
-
-  <div class="mt-12 pt-8">
-    <a
-      href="/"
-      class="inline-block px-6 py-3 bg-accent-orange text-on-primary font-black uppercase tracking-wider brutal-border brutal-shadow brutal-hover"
-    >
-      ← Back to all posts
-    </a>
-  </div>
+  </main>
 </Layout>
