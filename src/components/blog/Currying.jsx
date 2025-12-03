@@ -1,5 +1,5 @@
-/** @jsxImportSource react */
-import { Carousel } from "../../../../components/Carousel";
+import React from "react";
+import { Carousel } from "../Carousel";
 
 // Arrow component
 const Arrow = () => <div className="text-lg text-text-muted">↓</div>;
