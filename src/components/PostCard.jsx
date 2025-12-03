@@ -34,7 +34,7 @@ export const PostCard = ({ title, description, date, slug, tags = [] }) => {
               {tags.map((tag) => (
                 <span
                   key={tag}
-                  className="text-xs px-2 py-1 bg-secondary/60 text-text-muted rounded"
+                  className="text-xs px-2 py-1 bg-accent/20 text-accent rounded"
                 >
                   {tag}
                 </span>

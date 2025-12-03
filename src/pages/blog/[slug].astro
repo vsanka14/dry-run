@@ -40,7 +40,7 @@ const { Content } = await post.render();
           {post.data.tags && post.data.tags.length > 0 && (
             <div class="flex gap-2">
               {post.data.tags.map((tag: string) => (
-                <span class="text-xs px-2 py-0.5 bg-secondary/60 text-text-muted rounded">
+                <span class="text-xs px-2 py-0.5 bg-accent/20 text-accent rounded">
                   {tag}
                 </span>
               ))}
