@@ -373,8 +373,7 @@ const DryRunStep2 = () => (
 const DryRunStep3a = () => (
   <div className="flex flex-col gap-3">
     <div className="text-sm font-mono">
-      <span className="text-text-muted">add(1)</span>
-      <span className="text-accent bg-accent/20 px-1 rounded">(2)</span>
+      <span className="text-accent bg-accent/20 px-1 rounded">add(1)(2)</span>
       <span className="text-text-muted">(3)</span>
     </div>
     <FullCurryCode
@@ -418,8 +417,9 @@ const DryRunStep3b = () => (
 const DryRunStep4a = () => (
   <div className="flex flex-col gap-3">
     <div className="text-sm font-mono">
-      <span className="text-text-muted">add(1)(2)</span>
-      <span className="text-accent bg-accent/20 px-1 rounded">(3)</span>
+      <span className="text-accent bg-accent/20 px-1 rounded">
+        add(1)(2)(3)
+      </span>
     </div>
     <FullCurryCode
       highlightLines={[6, 7]}
@@ -528,5 +528,5 @@ export const DryRunCarousel = () => {
     },
   ];
 
-  return <Carousel steps={steps} />;
+  return <Carousel steps={steps} contentHeight="h-[430px]" />;
 };

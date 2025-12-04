@@ -4,8 +4,9 @@ import React, { useState } from "react";
  * A reusable carousel component with step navigation
  * @param {Array} steps - Array of step objects with { title, description, content }
  * @param {string} className - Optional additional CSS classes
+ * @param {string} contentHeight - Optional height for content area (default: "min-h-[280px]")
  */
-export const Carousel = ({ steps, className = "" }) => {
+export const Carousel = ({ steps, className = "", contentHeight = "min-h-[280px]" }) => {
   const [step, setStep] = useState(0);
 
   const next = () => setStep((s) => Math.min(s + 1, steps.length - 1));
@@ -53,7 +54,7 @@ export const Carousel = ({ steps, className = "" }) => {
       </div>
 
       {/* Content area */}
-      <div className="py-6 px-6 bg-primary min-h-[280px]">
+      <div className={`py-6 px-6 bg-primary ${contentHeight}`}>
         {steps[step].content}
       </div>
 
