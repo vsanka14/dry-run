@@ -52,8 +52,8 @@ export const Carousel = ({ steps, className = "" }) => {
         </div>
       </div>
 
-      {/* Content area - fixed height */}
-      <div className="py-6 px-4 flex flex-col items-center justify-center h-[280px] bg-primary">
+      {/* Content area */}
+      <div className="py-6 px-6 bg-primary min-h-[280px]">
         {steps[step].content}
       </div>
 

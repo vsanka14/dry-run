@@ -5,37 +5,81 @@ date: 2025-11-15
 tags: ["javascript"]
 ---
 
-import { RegularFunctionViz, CurriedCarousel } from "./components/Currying.jsx";
+import {
+  RegularFunctionViz,
+  CurriedCarousel,
+  DryRunCarousel,
+} from "./components/Currying.jsx";
 
 ## What is Currying?
 
-Imagine you have a function that needs three numbers to work, like `add(a, b, c)`. Normally, you'd call it like `add(2, 3, 5)` and get the answer right away.
+Imagine you have a function that needs three numbers to work: `add(a, b, c)`.
+Normally, you'd call it like `add(2, 3, 5)` and get the answer right away.
 
 <RegularFunctionViz client:load />
 
-Currying lets you break this into smaller steps—you can call `curriedAdd(2)` first, which gives you back a new function. Then you call that function with `(3)`, which gives you yet another function. Finally, you call that last function with `(5)` to get your answer. It's like passing ingredients one at a time instead of all at once!
+Currying lets you break this into smaller steps:
 
 <CurriedCarousel client:load />
 
-Currying is particularly useful when you want to create specialized functions from more general ones. For example, you might create a `logWithPrefix` function by partially applying a logger with a specific prefix:
+## OK, but why?
+
+Currying is particularly useful when you want to create specialized functions
+from more general ones. Consider an API client where you need to make requests
+to different endpoints with consistent configuration. Before, without currying:
 
 ```javascript
-const log = (prefix, message) => {
-  console.log(`[${prefix}] ${message}`);
+const request = async (baseUrl, method, endpoint, body) => {
+  const response = await fetch(`${baseUrl}${endpoint}`, {
+    method,
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  return response.json();
 };
 
-const logWithPrefix = (prefix) => (message) => log(prefix, message);
+// Every call requires repeating params
+await request("https://api.example.com", "GET", "/users", null);
+await request("https://api.example.com", "POST", "/users", { name: "Alice" });
+await request("https://api.example.com", "GET", "/posts", null);
+```
 
-const logError = logWithPrefix("ERROR");
-const logInfo = logWithPrefix("INFO");
+After, with currying:
 
-logError("Something went wrong!"); // [ERROR] Something went wrong!
-logInfo("Process completed"); // [INFO] Process completed
+```javascript
+const _request = async (baseUrl, method, endpoint, body) => {
+  const response = await fetch(`${baseUrl}${endpoint}`, {
+    method,
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  return response.json();
+};
+const request = curry(_request);
+
+// Configure once, use everywhere
+const api = request("https://api.example.com");
+const get = api("GET");
+const post = api("POST");
+
+await get("/users");
+await post("/users", { name: "Alice" });
+await get("/posts");
 ```
 
 ## Implementation
 
-The key idea is to check if we have enough arguments yet. If we do, we call the original function. If not, we return a new function that "remembers" the arguments we've collected so far and waits for more. We keep doing this until we have all the arguments needed, then finally execute the function.
+So, how do we implement the `curry` function from the previous example?
+
+The key idea is to check if we have received enough arguments yet. Every
+function in JavaScript has a `.length` property that tells us how many
+parameters it expects. When someone calls our curried function, we compare the
+number of arguments they passed against this expected count.
+
+If we have all the arguments we need, we simply call the original function with
+them. But if we're still missing some, we return a _new_ function that captures
+the arguments we've received so far in a closure. When this new function is
+called with more arguments, it combines them with the ones it captured in the
+closure and checks again. This process repeats until we've accumulated enough
+arguments to finally execute the original function.
 
 ```javascript
 function curry(func) {
@@ -43,18 +87,16 @@ function curry(func) {
     if (args.length >= func.length) {
       return func.apply(this, args);
     } else {
-      return function nextCurried(...args2) {
+      return function (...args2) {
         return curried.apply(this, args.concat(args2));
       };
     }
   };
 }
-
-const add = (a, b, c) => {
-  return a + b + c;
-};
-
-const curriedAdd = curry(add);
-const result = curriedAdd(2)(3)(5);
-console.log(result); // 10
 ```
+
+## Dry Run: Tracing `add(1)(2)(3)`
+
+Let's trace through exactly what happens when we call our curried add function:
+
+<DryRunCarousel client:load />
