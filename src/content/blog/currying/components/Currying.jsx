@@ -528,5 +528,5 @@ export const DryRunCarousel = () => {
     },
   ];
 
-  return <Carousel steps={steps} contentHeight="h-[430px]" />;
+  return <Carousel steps={steps} contentHeight="h-[500px] md:h-[450px]" />;
 };
