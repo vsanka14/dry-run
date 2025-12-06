@@ -6,7 +6,7 @@
  * @param {string} props.slug
  * @param {string[]} [props.tags]
  */
-export const PostCard = ({ title, description, date, slug, tags = [] }) => {
+export const Post = ({ title, description, date, slug, tags = [] }) => {
   const formattedDate = date.toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",

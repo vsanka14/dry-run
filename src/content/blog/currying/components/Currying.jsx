@@ -1,5 +1,6 @@
 /** @jsxImportSource react */
 import { Carousel } from "../../../../components/Carousel";
+import { Pane } from "../../../../components/Pane";
 
 // Arrow component
 const Arrow = () => <div className="text-lg text-text-muted">↓</div>;
@@ -166,33 +167,34 @@ const CurriedStepD = () => (
 
 // Regular function visualization (standalone, no carousel)
 export const RegularFunctionViz = () => {
-  return (
-    <div className="rounded-lg overflow-hidden mb-6 bg-secondary border border-text-muted/30">
-      <div className="px-4 py-2 border-b border-primary/50 flex items-center gap-2">
-        <span className="text-sm text-text">Regular Function</span>
-        <span className="text-xs text-text-muted">— all args at once</span>
-      </div>
-      <div className="flex flex-col items-center gap-4 py-6 px-4 bg-primary">
-        {/* Function call */}
-        <div className="flex items-center gap-1 text-sm font-mono">
-          <span className="text-text-muted">add</span>
-          <span className="text-text-muted">(</span>
-          <Slot value="2" />
-          <span className="text-text-muted">,</span>
-          <Slot value="3" />
-          <span className="text-text-muted">,</span>
-          <Slot value="5" />
-          <span className="text-text-muted">)</span>
-        </div>
-
-        <Arrow />
-
-        {/* Result */}
-        <div className="px-4 py-2 bg-secondary rounded font-mono text-xl font-medium text-accent">
-          10
-        </div>
-      </div>
+  const header = (
+    <div className="flex items-center gap-2">
+      <span className="text-sm text-text">Regular Function</span>
+      <span className="text-xs text-text-muted">— all args at once</span>
     </div>
+  );
+
+  return (
+    <Pane header={header} contentClassName="flex flex-col items-center gap-4">
+      {/* Function call */}
+      <div className="flex items-center gap-1 text-sm font-mono">
+        <span className="text-text-muted">add</span>
+        <span className="text-text-muted">(</span>
+        <Slot value="2" />
+        <span className="text-text-muted">,</span>
+        <Slot value="3" />
+        <span className="text-text-muted">,</span>
+        <Slot value="5" />
+        <span className="text-text-muted">)</span>
+      </div>
+
+      <Arrow />
+
+      {/* Result */}
+      <div className="px-4 py-2 bg-secondary rounded font-mono text-xl font-medium text-accent">
+        10
+      </div>
+    </Pane>
   );
 };
 
