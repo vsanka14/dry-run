@@ -15,7 +15,7 @@ export const Post = ({ title, description, date, slug, tags = [] }) => {
   return (
     <article className="group">
       <a href={`/blog/${slug}`} className="block hover:no-underline">
-        <div className="p-5 border border-secondary rounded-lg transition-all duration-200 hover:border-accent/40 hover:bg-secondary/20">
+        <div className="p-3 border border-secondary rounded-lg transition-all duration-200 hover:border-accent/40 hover:bg-secondary/20">
           <div className="flex items-start justify-between gap-4 mb-3">
             <h3 className="text-lg text-text group-hover:text-accent transition-colors font-semibold">
               {title}
