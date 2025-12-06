@@ -1,5 +1,3 @@
-/** @jsxImportSource react */
-
 /**
  * A reusable pane component with a header and content area
  * @param {React.ReactNode} header - Content for the header area
