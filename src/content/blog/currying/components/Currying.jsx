@@ -236,7 +236,7 @@ const CodeLine = ({ children, highlight, indent = 0 }) => (
 
 // Variable badge
 const VarBadge = ({ name, value }) => (
-  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-secondary rounded text-xs font-mono">
+  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-code-bg rounded text-xs font-mono">
     <span className="text-text-muted">{name}:</span>
     <span className="text-accent">{value}</span>
   </span>
@@ -244,7 +244,7 @@ const VarBadge = ({ name, value }) => (
 
 // Full curry function code block - reusable component
 const FullCurryCode = ({ highlightLines = [], annotations = {} }) => (
-  <div className="bg-secondary rounded p-3 space-y-0.5 text-xs">
+  <div className="bg-code-bg rounded-lg p-3 space-y-0.5 text-xs">
     <CodeLine highlight={highlightLines.includes(1)}>
       <span className="text-text-muted">function</span>{" "}
       <span className="text-text">curry(func)</span>{" "}
@@ -310,11 +310,11 @@ const FullCurryCode = ({ highlightLines = [], annotations = {} }) => (
 
 // Dry run step 1: Setup
 const DryRunStep1 = () => (
-  <div className="flex flex-col gap-3">
+  <div className="flex flex-col gap-3 h-full">
     <div className="text-sm text-text-muted">
       First, we define our function and curry it:
     </div>
-    <div className="bg-secondary rounded p-3 space-y-1 text-xs">
+    <div className="bg-code-bg rounded-lg p-3 space-y-1 text-xs">
       <CodeLine highlight>
         <span className="text-text-muted">const</span>{" "}
         <span className="text-text">_add</span>{" "}
@@ -336,6 +336,7 @@ const DryRunStep1 = () => (
       highlightLines={[1, 2]}
       annotations={{ 1: "← called with _add", 2: "← returns this" }}
     />
+    <div className="flex-grow" />
     <div className="flex flex-wrap gap-2">
       <VarBadge name="_add.length" value="3" />
       <VarBadge name="add" value="curried fn" />
@@ -345,7 +346,7 @@ const DryRunStep1 = () => (
 
 // Dry run step 2: First call add(1)
 const DryRunStep2 = () => (
-  <div className="flex flex-col gap-3">
+  <div className="flex flex-col gap-3 h-full">
     <div className="text-sm font-mono">
       <span className="text-accent bg-accent/20 px-1 rounded">add(1)</span>
       <span className="text-text-muted">(2)(3)</span>
@@ -358,6 +359,7 @@ const DryRunStep2 = () => (
         6: "← returns this",
       }}
     />
+    <div className="flex-grow" />
     <div className="flex flex-wrap gap-2">
       <VarBadge name="args" value="[1]" />
       <VarBadge name="func.length" value="3" />
@@ -373,7 +375,7 @@ const DryRunStep2 = () => (
 
 // Dry run step 3a: Second call (2) - inner function receives args2
 const DryRunStep3a = () => (
-  <div className="flex flex-col gap-3">
+  <div className="flex flex-col gap-3 h-full">
     <div className="text-sm font-mono">
       <span className="text-accent bg-accent/20 px-1 rounded">add(1)(2)</span>
       <span className="text-text-muted">(3)</span>
@@ -385,6 +387,7 @@ const DryRunStep3a = () => (
         7: "← concat: [1] + [2]",
       }}
     />
+    <div className="flex-grow" />
     <div className="flex flex-wrap gap-2">
       <VarBadge name="closure" value="[1]" />
       <VarBadge name="args2" value="[2]" />
@@ -394,7 +397,7 @@ const DryRunStep3a = () => (
 
 // Dry run step 3b: Second call (2) - curried called with combined args
 const DryRunStep3b = () => (
-  <div className="flex flex-col gap-3">
+  <div className="flex flex-col gap-3 h-full">
     <div className="text-sm font-mono">
       <span className="text-accent bg-accent/20 px-1 rounded">add(1)(2)</span>
       <span className="text-text-muted">(3)</span>
@@ -407,6 +410,7 @@ const DryRunStep3b = () => (
         6: "← returns this",
       }}
     />
+    <div className="flex-grow" />
     <div className="flex flex-wrap gap-2">
       <VarBadge name="args" value="[1, 2]" />
       <VarBadge name="func.length" value="3" />
@@ -417,7 +421,7 @@ const DryRunStep3b = () => (
 
 // Dry run step 4a: Third call (3) - inner function receives args2
 const DryRunStep4a = () => (
-  <div className="flex flex-col gap-3">
+  <div className="flex flex-col gap-3 h-full">
     <div className="text-sm font-mono">
       <span className="text-accent bg-accent/20 px-1 rounded">
         add(1)(2)(3)
@@ -430,6 +434,7 @@ const DryRunStep4a = () => (
         7: "← concat: [1,2] + [3]",
       }}
     />
+    <div className="flex-grow" />
     <div className="flex flex-wrap gap-2">
       <VarBadge name="closure" value="[1, 2]" />
       <VarBadge name="args2" value="[3]" />
@@ -439,7 +444,7 @@ const DryRunStep4a = () => (
 
 // Dry run step 4b: Third call (3) - curried called with all args
 const DryRunStep4b = () => (
-  <div className="flex flex-col gap-3">
+  <div className="flex flex-col gap-3 h-full">
     <div className="text-sm font-mono">
       <span className="text-accent bg-accent/20 px-1 rounded">
         add(1)(2)(3)
@@ -453,6 +458,7 @@ const DryRunStep4b = () => (
         4: "← _add(1, 2, 3)",
       }}
     />
+    <div className="flex-grow" />
     <div className="flex flex-wrap gap-2">
       <VarBadge name="args" value="[1, 2, 3]" />
       <VarBadge name="func.length" value="3" />
@@ -463,11 +469,11 @@ const DryRunStep4b = () => (
 
 // Dry run step 5: Result
 const DryRunStep5 = () => (
-  <div className="flex flex-col gap-3">
+  <div className="flex flex-col h-full justify-between gap-3">
     <div className="text-sm text-text-muted">
       The original function executes:
     </div>
-    <div className="bg-secondary rounded p-3 space-y-1">
+    <div className="bg-code-bg rounded-lg p-6 space-y-1">
       <CodeLine highlight>
         <span className="text-text">_add(1, 2, 3)</span>
       </CodeLine>
