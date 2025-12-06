@@ -9,6 +9,13 @@ import react from "@astrojs/react";
 export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
+    resolve: {
+      alias: {
+        components: "/src/components",
+        layouts: "/src/layouts",
+        assets: "/src/assets",
+      },
+    },
   },
 
   integrations: [mdx(), react()],

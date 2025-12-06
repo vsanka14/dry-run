@@ -5,7 +5,7 @@ import { Pane } from "./Pane";
  * A reusable carousel component with step navigation
  * @param {Array} steps - Array of step objects with { title, description, content }
  * @param {string} className - Optional additional CSS classes
- * @param {string} contentHeight - Optional height for content area (default: "min-h-[280px]")
+ * @param {string} contentHeight - Optional height for content area (default: "min-h-[300px]")
  */
 export const Carousel = ({
   steps,
