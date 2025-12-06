@@ -10,7 +10,7 @@ import { Pane } from "./Pane";
 export const Carousel = ({
   steps,
   className = "",
-  contentHeight = "min-h-[280px]",
+  contentHeight = "min-h-[300px]",
 }) => {
   const [step, setStep] = useState(0);
 
@@ -38,14 +38,14 @@ export const Carousel = ({
         <button
           onClick={prev}
           disabled={step === 0}
-          className="px-2 py-1 text-xs text-text-muted hover:text-text transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+          className="px-2 py-1 text-sm text-accent font-bold hover:text-text transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
         >
           ←
         </button>
         <button
           onClick={next}
           disabled={step === steps.length - 1}
-          className="px-2 py-1 text-xs text-accent hover:text-text transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+          className="px-2 py-1 text-sm text-accent font-bold hover:text-text transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
         >
           →
         </button>
@@ -59,8 +59,8 @@ export const Carousel = ({
         <button
           key={i}
           onClick={() => setStep(i)}
-          className={`h-1.5 rounded-full transition-all duration-200 ${
-            i === step ? "w-4 bg-accent" : "w-1.5 bg-text-muted/30"
+          className={`h-2 rounded-full transition-all duration-200 ${
+            i === step ? "w-6 bg-accent" : "w-3 bg-text-muted/30"
           }`}
           type="button"
           aria-label={`Step ${i + 1}`}
