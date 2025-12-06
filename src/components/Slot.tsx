@@ -1,5 +1,9 @@
-// Reusable slot component - minimal style
-export const Slot = ({ value, active }) => {
+interface SlotProps {
+  value: string | number;
+  active?: boolean;
+}
+
+export const Slot = ({ value, active }: SlotProps) => {
   return (
     <span
       className={`inline-flex items-center justify-center w-7 h-7 text-sm font-mono rounded border transition-all duration-200 ${

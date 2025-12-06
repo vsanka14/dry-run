@@ -1,12 +1,18 @@
-/**
- * @param {object} props
- * @param {string} props.title
- * @param {string} props.description
- * @param {Date} props.date
- * @param {string} props.slug
- * @param {string[]} [props.tags]
- */
-export const Post = ({ title, description, date, slug, tags = [] }) => {
+interface PostProps {
+  title: string;
+  description: string;
+  date: Date;
+  slug: string;
+  tags?: string[];
+}
+
+export const Post = ({
+  title,
+  description,
+  date,
+  slug,
+  tags = [],
+}: PostProps) => {
   const formattedDate = date.toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",

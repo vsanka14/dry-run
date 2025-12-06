@@ -1,23 +1,30 @@
 import React from "react";
+import type { ReactNode } from "react";
 import { Pane } from "./Pane";
 
-/**
- * A reusable carousel component with step navigation
- * @param {Array} steps - Array of step objects with { title, description, content }
- * @param {string} className - Optional additional CSS classes
- * @param {string} contentHeight - Optional height for content area (default: "min-h-[300px]")
- */
+interface CarouselStep {
+  title: string;
+  description?: string;
+  content: ReactNode;
+}
+
+interface CarouselProps {
+  steps: CarouselStep[];
+  className?: string;
+  contentHeight?: string;
+}
+
 export const Carousel = ({
   steps,
   className = "",
   contentHeight = "min-h-[300px]",
-}) => {
+}: CarouselProps) => {
   const [step, setStep] = React.useState(0);
 
   const next = () => setStep((s) => Math.min(s + 1, steps.length - 1));
   const prev = () => setStep((s) => Math.max(s - 1, 0));
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowRight") {
       next();
     } else if (e.key === "ArrowLeft") {

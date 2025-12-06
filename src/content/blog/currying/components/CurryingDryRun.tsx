@@ -1,7 +1,14 @@
+import type { ReactNode } from "react";
 import { Carousel } from "components/Carousel";
 
+interface CodeLineProps {
+  children: ReactNode;
+  highlight?: boolean;
+  indent?: number;
+}
+
 // Code line component for dry run
-const CodeLine = ({ children, highlight, indent = 0 }) => (
+const CodeLine = ({ children, highlight, indent = 0 }: CodeLineProps) => (
   <div
     className={`font-mono text-xs leading-relaxed transition-all duration-300 ${
       highlight ? "bg-accent/20 -mx-2 px-2 rounded" : ""
@@ -12,16 +19,29 @@ const CodeLine = ({ children, highlight, indent = 0 }) => (
   </div>
 );
 
+interface VarBadgeProps {
+  name: string;
+  value: string;
+}
+
 // Variable badge
-const VarBadge = ({ name, value }) => (
+const VarBadge = ({ name, value }: VarBadgeProps) => (
   <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-code-bg rounded text-xs font-mono">
     <span className="text-text-muted">{name}:</span>
     <span className="text-accent">{value}</span>
   </span>
 );
 
+interface FullCurryCodeProps {
+  highlightLines?: number[];
+  annotations?: Record<number, string>;
+}
+
 // Full curry function code block - reusable component
-const FullCurryCode = ({ highlightLines = [], annotations = {} }) => (
+const FullCurryCode = ({
+  highlightLines = [],
+  annotations = {},
+}: FullCurryCodeProps) => (
   <div className="bg-code-bg rounded-lg p-3 space-y-0.5 text-xs">
     <CodeLine highlight={highlightLines.includes(1)}>
       <span className="text-text-muted">function</span>{" "}
@@ -286,31 +306,31 @@ export const DryRunCarousel = () => {
   const steps = [
     {
       title: "Setup",
-      content: <DryRunStep1 />,
+      content: (<DryRunStep1 />) as ReactNode,
     },
     {
       title: "add(1)",
-      content: <DryRunStep2 />,
+      content: (<DryRunStep2 />) as ReactNode,
     },
     {
       title: "add(1)(2)",
-      content: <DryRunStep3a />,
+      content: (<DryRunStep3a />) as ReactNode,
     },
     {
       title: "add(1)(2) → curried",
-      content: <DryRunStep3b />,
+      content: (<DryRunStep3b />) as ReactNode,
     },
     {
       title: "add(1)(2)(3)",
-      content: <DryRunStep4a />,
+      content: (<DryRunStep4a />) as ReactNode,
     },
     {
       title: "add(1)(2)(3) → curried",
-      content: <DryRunStep4b />,
+      content: (<DryRunStep4b />) as ReactNode,
     },
     {
       title: "Result",
-      content: <DryRunStep5 />,
+      content: (<DryRunStep5 />) as ReactNode,
     },
   ];
 

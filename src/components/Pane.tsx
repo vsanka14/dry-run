@@ -1,11 +1,14 @@
-/**
- * A reusable pane component with a header and content area
- * @param {React.ReactNode} header - Content for the header area
- * @param {React.ReactNode} children - Content for the main area
- * @param {React.ReactNode} footer - Optional content for the footer area
- * @param {string} className - Optional additional CSS classes for the outer container
- * @param {string} contentClassName - Optional additional CSS classes for the content area
- */
+import type { ReactNode } from "react";
+
+interface PaneProps {
+  header: ReactNode;
+  children: ReactNode;
+  footer?: ReactNode;
+  className?: string;
+  contentClassName?: string;
+  [key: string]: any;
+}
+
 export const Pane = ({
   header,
   children,
@@ -13,7 +16,7 @@ export const Pane = ({
   className = "",
   contentClassName = "",
   ...rest
-}) => {
+}: PaneProps) => {
   return (
     <div
       className={`rounded-lg overflow-hidden mb-6 bg-secondary border border-text-muted/30 ${className}`}

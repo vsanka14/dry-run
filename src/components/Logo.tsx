@@ -1,4 +1,8 @@
-export function Logo({ className = "" }) {
+interface LogoProps {
+  className?: string;
+}
+
+export function Logo({ className = "" }: LogoProps) {
   return (
     <a
       href="/"

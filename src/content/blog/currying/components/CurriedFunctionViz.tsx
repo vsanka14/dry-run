@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Carousel } from "components/Carousel";
 import { Arrow } from "components/Arrow";
 import { Slot } from "components/Slot";
@@ -152,19 +153,19 @@ export const CurriedCarousel = () => {
   const curriedSteps = [
     {
       title: "Curried Function: Pass first Argument",
-      content: <CurriedStepA />,
+      content: (<CurriedStepA />) as ReactNode,
     },
     {
       title: "Curried Function: Pass second Argument",
-      content: <CurriedStepB />,
+      content: (<CurriedStepB />) as ReactNode,
     },
     {
       title: "Curried Function: Pass third Argument",
-      content: <CurriedStepC />,
+      content: (<CurriedStepC />) as ReactNode,
     },
     {
       title: "Curried Function: Compute the result",
-      content: <CurriedStepD />,
+      content: (<CurriedStepD />) as ReactNode,
     },
   ];
 
