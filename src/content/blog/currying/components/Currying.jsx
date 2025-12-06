@@ -472,23 +472,23 @@ const DryRunStep5 = () => (
   <div className="flex flex-col h-full justify-between gap-3">
     <div className="text-sm text-text-muted">
       The original function executes:
-    </div>
-    <div className="bg-code-bg rounded-lg p-6 space-y-1">
-      <CodeLine highlight>
-        <span className="text-text">_add(1, 2, 3)</span>
-      </CodeLine>
-      <CodeLine>
-        <span className="text-text-muted">↓</span>
-      </CodeLine>
-      <CodeLine highlight>
-        <span className="text-text">1 + 2 + 3</span>
-      </CodeLine>
-      <CodeLine>
-        <span className="text-text-muted">↓</span>
-      </CodeLine>
-      <CodeLine highlight>
-        <span className="text-accent text-lg font-bold">6</span>
-      </CodeLine>
+      <div className="mt-3 bg-code-bg rounded-lg p-3 space-y-1">
+        <CodeLine highlight>
+          <span className="text-text">_add(1, 2, 3)</span>
+        </CodeLine>
+        <CodeLine>
+          <span className="text-text-muted">↓</span>
+        </CodeLine>
+        <CodeLine highlight>
+          <span className="text-text">1 + 2 + 3</span>
+        </CodeLine>
+        <CodeLine>
+          <span className="text-text-muted">↓</span>
+        </CodeLine>
+        <CodeLine highlight>
+          <span className="text-accent text-lg font-bold">6</span>
+        </CodeLine>
+      </div>
     </div>
     <div className="mt-2 p-3 bg-accent/10 rounded border border-accent/30">
       <div className="text-sm text-text">
