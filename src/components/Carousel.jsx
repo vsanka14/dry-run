@@ -63,7 +63,7 @@ export const Carousel = ({
             i === step ? "w-4 bg-accent" : "w-1.5 bg-text-muted/30"
           }`}
           type="button"
-          aria-label={`Step ${i}`}
+          aria-label={`Step ${i + 1}`}
         />
       ))}
     </div>
