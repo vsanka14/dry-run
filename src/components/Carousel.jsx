@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Pane } from "./Pane";
 
 /**
@@ -12,7 +12,7 @@ export const Carousel = ({
   className = "",
   contentHeight = "min-h-[300px]",
 }) => {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = React.useState(0);
 
   const next = () => setStep((s) => Math.min(s + 1, steps.length - 1));
   const prev = () => setStep((s) => Math.max(s - 1, 0));
