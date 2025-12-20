@@ -1,67 +1,120 @@
 ---
-title: "Currying in JavaScript"
-description: "Understanding function currying with a step-by-step breakdown"
+title: "Currying and Partial Application"
+description:
+  "Understanding currying and partial application with clear examples"
 date: 2025-11-15
 tags: ["javascript"]
 ---
 
-import { RegularFunctionViz } from "./components/RegularFunctionViz";
-import { CurriedCarousel } from "./components/CurriedFunctionViz";
 import { DryRunCarousel } from "./components/CurryingDryRun";
 
-## What is Currying?
+## Currying: Transforming Functions
 
-Imagine you have a function that needs three numbers to work: `add(a, b, c)`.
-Normally, you'd call it like `add(2, 3, 5)` and get the answer right away.
+**Currying** is a transformation that restructures a multi-argument function
+into a sequence of nested single-argument functions.
 
-<RegularFunctionViz client:load />
-
-Currying lets you break this into smaller steps:
-
-<CurriedCarousel client:load />
-
-## OK, but why?
-
-Currying is particularly useful when you want to create specialized functions
-from more general ones. Consider an API client where you need to make requests
-to different endpoints with consistent configuration. Before, without currying:
+The transformation looks like this:
 
 ```javascript
-const request = async (baseUrl, method, endpoint, body) => {
-  const response = await fetch(`${baseUrl}${endpoint}`, {
-    method,
-    body: body ? JSON.stringify(body) : undefined,
-  });
-  return response.json();
-};
+// Before currying: one function taking multiple arguments
+function add(a, b, c) {
+  return a + b + c;
+}
 
-// Every call requires repeating params
-await request("https://api.example.com", "GET", "/users", null);
-await request("https://api.example.com", "POST", "/users", { name: "Alice" });
-await request("https://api.example.com", "GET", "/posts", null);
+// After currying: nested functions, each taking one argument
+function curriedAdd(a) {
+  return function (b) {
+    return function (c) {
+      return a + b + c;
+    };
+  };
+}
+
+// Or with arrow functions:
+const curriedAdd = (a) => (b) => (c) => a + b + c;
 ```
 
-After, with currying:
+Notice the structure: we've gone from **one function with three parameters** to
+**three nested functions, each with one parameter**. That's the transformation.
+
+**Key insight**: Currying changes the _structure_ of a function. It's a one-time
+transformation of how the function is defined.
+
+## Partial Application: Fixing Arguments
+
+**Partial Application** is the act of calling a function with some (but not all)
+of its arguments, producing a new function that expects the remaining arguments.
 
 ```javascript
-const _request = async (baseUrl, method, endpoint, body) => {
-  const response = await fetch(`${baseUrl}${endpoint}`, {
-    method,
-    body: body ? JSON.stringify(body) : undefined,
-  });
-  return response.json();
-};
-const request = curry(_request);
+const add = (a) => (b) => (c) => a + b + c;
 
-// Configure once, use everywhere
-const api = request("https://api.example.com");
-const get = api("GET");
-const post = api("POST");
+// One argument at a time
+const addTwo = add(2);
+const addTwoAndThree = addTwo(3);
+const result = addTwoAndThree(5); // 10
 
-await get("/users");
-await post("/users", { name: "Alice" });
-await get("/posts");
+// Multiple arguments at once (with flexible curry implementation)
+const addOneAndTwo = add(1, 2);
+addOneAndTwo(3); // 6
 ```
+
+**Key insight**: Partial application happens _at call time_. You're not
+restructuring the function; you're calling it with some arguments and getting
+back a function that expects the rest.
+
+### OK, but why?
+
+Say you have a list of users and need to filter them:
+
+```javascript
+const users = [
+  { id: 1, name: "Steve", email: "steve@example.com" },
+  { id: 2, name: "John", email: "john@example.com" },
+  { id: 3, name: "Pamela", email: "pam@example.com" },
+];
+```
+
+You create a reusable function:
+
+```javascript
+const excludeByName = (users, name) => {
+  return users.filter((user) => user.name !== name);
+};
+
+excludeByName(users, "John");
+```
+
+But what if you want to extract just the filtering logic? Without currying, this
+breaks:
+
+```javascript
+const nameFilter = (user) => user.name !== name; // ❌ name is not defined
+
+const excludeByName = (users, name) => {
+  return users.filter(nameFilter); // breaks!
+};
+```
+
+With currying:
+
+```javascript
+const nameFilter = (name) => (user) => user.name !== name;
+
+const excludeByName = (users, name) => {
+  return users.filter(nameFilter(name)); // ✓ works!
+};
+
+// Now you can create specialized filters
+const excludeJohn = nameFilter("John");
+const excludeSteve = nameFilter("Steve");
+
+users.filter(excludeJohn);
+users.filter(excludeSteve);
+```
+
+Partial application lets you create specialized versions of functions without
+repeating arguments. This is powerful for building data pipelines and composing
+operations with `map`, `filter`, and `reduce`.
 
 ## Implementation
 
