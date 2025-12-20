@@ -118,19 +118,16 @@ operations with `map`, `filter`, and `reduce`.
 
 ## Implementation
 
-So, how do we implement the `curry` function from the previous example?
+Let's implement a `curry` function that transforms any multi-argument function
+into a curried version. This implementation is flexible—like
+[lodash's curry](https://lodash.com/docs/#curry)—and allows multiple arguments
+to be passed at once.
 
-The key idea is to check if we have received enough arguments yet. Every
-function in JavaScript has a `.length` property that tells us how many
-parameters it expects. When someone calls our curried function, we compare the
-number of arguments they passed against this expected count.
-
-If we have all the arguments we need, we simply call the original function with
-them. But if we're still missing some, we return a _new_ function that captures
-the arguments we've received so far in a closure. When this new function is
-called with more arguments, it combines them with the ones it captured in the
-closure and checks again. This process repeats until we've accumulated enough
-arguments to finally execute the original function.
+The idea: check if we have enough arguments. Every function has a `.length`
+property showing how many parameters it expects. If we have enough arguments,
+call the original function. If not, return a new function that remembers the
+arguments received so far and waits for more. When called again, it combines old
+and new arguments and repeats the check.
 
 ```javascript
 function curry(func) {
