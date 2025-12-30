@@ -64,52 +64,43 @@ back a function that expects the rest.
 
 ### OK, but why?
 
-Say you have a list of users and need to filter them:
+Currying shines when you need to create specialized functions for APIs that
+expect a specific signature. Event handlers are a perfect example:
 
 ```javascript
-const users = [
-  { id: 1, name: "Steve", email: "steve@example.com" },
-  { id: 2, name: "John", email: "john@example.com" },
-  { id: 3, name: "Pamela", email: "pam@example.com" },
-];
+// Without currying: repetitive inline functions
+<button onClick={(e) => { e.preventDefault(); dispatch('SUBMIT'); }} />
+<button onClick={(e) => { e.preventDefault(); dispatch('CANCEL'); }} />
+<button onClick={(e) => { e.preventDefault(); dispatch('RESET'); }} />
 ```
 
-You create a reusable function:
+With currying, you can create a reusable handler factory:
 
 ```javascript
-const excludeByName = (users, name) => {
-  return users.filter((user) => user.name !== name);
+const handleClick = (action) => (event) => {
+  event.preventDefault();
+  dispatch(action);
 };
 
-excludeByName(users, "John");
+// Clean, reusable handlers
+<button onClick={handleClick('SUBMIT')} />
+<button onClick={handleClick('CANCEL')} />
+<button onClick={handleClick('RESET')} />
 ```
 
-But what if you want to extract just the filtering logic? Without currying, this
-breaks:
+The curried function lets you "bake in" the action while producing a function
+with the exact signature `onClick` expects: `(event) => void`.
+
+This pattern extends naturally to data transformations:
 
 ```javascript
-const nameFilter = (user) => user.name !== name; // ❌ name is not defined
+const multiply = (a) => (b) => a * b;
 
-const excludeByName = (users, name) => {
-  return users.filter(nameFilter); // breaks!
-};
-```
+const double = multiply(2);
+const triple = multiply(3);
 
-With currying:
-
-```javascript
-const nameFilter = (name) => (user) => user.name !== name;
-
-const excludeByName = (users, name) => {
-  return users.filter(nameFilter(name)); // ✓ works!
-};
-
-// Now you can create specialized filters
-const excludeJohn = nameFilter("John");
-const excludeSteve = nameFilter("Steve");
-
-users.filter(excludeJohn);
-users.filter(excludeSteve);
+[1, 2, 3].map(double); // [2, 4, 6]
+[1, 2, 3].map(triple); // [3, 6, 9]
 ```
 
 Partial application lets you create specialized versions of functions without
