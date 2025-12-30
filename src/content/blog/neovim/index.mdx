@@ -7,27 +7,27 @@ tags: ["tooling"]
 
 import { Video } from "components/Video";
 
-I've always preferred working on a single screen: just my MacBook and no external
-monitors. At work I'd sometimes use a
-second display and saw some value in it. But largely, my setup was already leaning this way:
-a single screen with VS Code or Cursor in one macOS desktop, Chrome in another, terminal in a third, switching
-between them with `Cmd+Tab` or a three-finger swipe.
+I've always preferred working on a single screen: just my MacBook and no
+external monitors. At work I'd sometimes use a second display and saw some value
+in it. But largely, my setup was already leaning this way: a single screen with
+VS Code or Cursor in one macOS desktop, Chrome in another, terminal in a third,
+switching between them with `Cmd+Tab` or a three-finger swipe.
 
 I've used Vim sparingly over the past couple years—mostly rudimentary vim
 motions for git commit messages at work and some curious tinkering on personal
 projects. I always wanted to level up to a more advanced workflow with
-Vim/Neovim, but the barrier felt insurmountable. 
+Vim/Neovim, but the barrier felt insurmountable.
 
-Vim on its own is tough
-enough, and while I'd become somewhat comfortable with it, Neovim seemed way
-too daunting. Every time I tried, I'd just end up crawling back to VS Code or
-Cursor. That changed when I finally stumbled onto the right approach during this holiday break.
+Vim on its own is tough enough, and while I'd become somewhat comfortable with
+it, Neovim seemed way too daunting. Every time I tried, I'd just end up crawling
+back to VS Code or Cursor. That changed when I finally stumbled onto the right
+approach during this holiday break.
 
 ## The Philosophy: Why Terminal First?
 
 You only look at one thing at a time. Multiple monitors don't help much if your
-eyes can only focus on one screen. What matters is how quickly and
-intentionally you can switch contexts.
+eyes can only focus on one screen. What matters is how quickly and intentionally
+you can switch contexts.
 
 That's where keyboard-driven workflows shine. Switching via keybindings is
 instant—no reaching for the mouse, no hunting for windows. Context switching
@@ -37,21 +37,21 @@ and it happens immediately.
 The terminal is what makes this possible. It's inherently keyboard-first, and
 everything can live in one app. It feels snappier. And there's the intangible
 part: it turns your dev environment into a little toy you can keep tinkering
-with. Some may call it frivolous, but it made coding fun again for me. 
+with. Some may call it frivolous, but it made coding fun again for me.
 
 [WezTerm](https://wezfurlong.org/wezterm/) is what makes this possible for me.
 It's a true color terminal—essential for themes and syntax highlighting to
 actually look right. The config is written in Lua (same as Neovim) and
-auto-reloads when you save it, so you get instant feedback while tinkering. Out of
-the box it supports image rendering, split panes, and tabs with easy keyboard
+auto-reloads when you save it, so you get instant feedback while tinkering. Out
+of the box it supports image rendering, split panes, and tabs with easy keyboard
 navigation. It's just a joy to use.
 
-
 {/* ------------------------------------------------------------------ */}
-{/* VIDEO 1: The Vibe Shot                                             */}
+{/* VIDEO 1: The Vibe Shot */}
 {/* Record: Open WezTerm, show the background/theme, run `ls` or `eza` */}
-{/* in a project directory to show icons + colors. ~5-8 seconds.       */}
+{/* in a project directory to show icons + colors. ~5-8 seconds. */}
 {/* ------------------------------------------------------------------ */}
+
 <Video
   client:load
   src="/videos/workflow.mp4"
@@ -85,11 +85,12 @@ like `y` and it shows you yanking options as you type. You learn by exploring,
 not memorizing. It's what finally made vim motions click.
 
 {/* ------------------------------------------------------------------ */}
-{/* VIDEO 2: Discoverability Demo                                      */}
-{/* Record: In Neovim, press Space to show which-key menu, navigate    */}
-{/* to file search (Space+f+f). Then press y to show yank options.     */}
-{/* ~8-12 seconds.                                                     */}
+{/* VIDEO 2: Discoverability Demo */}
+{/* Record: In Neovim, press Space to show which-key menu, navigate */}
+{/* to file search (Space+f+f). Then press y to show yank options. */}
+{/* ~8-12 seconds. */}
 {/* ------------------------------------------------------------------ */}
+
 <Video
   client:load
   src="/videos/astronvim.mp4"
@@ -99,19 +100,20 @@ not memorizing. It's what finally made vim motions click.
 ### 2. OpenCode as the Sensei
 
 This was the real game-changer. Having a terminal-driven AI agent running
-alongside Neovim meant I always had a patient tutor on standby—one that fits
-the keyboard-centric philosophy. No switching to a browser or GUI app, just
-`Cmd+1` for Neovim and `Cmd+2` for [OpenCode](https://opencode.ai). Stuck on some
-weird Lua config? Ask the agent. LSP not working? Ask the agent. It can read
-your files, suggest fixes, even make edits directly. No more digging through
-docs or Stack Overflow rabbit holes.
+alongside Neovim meant I always had a patient tutor on standby—one that fits the
+keyboard-centric philosophy. No switching to a browser or GUI app, just `Cmd+1`
+for Neovim and `Cmd+2` for [OpenCode](https://opencode.ai). Stuck on some weird
+Lua config? Ask the agent. LSP not working? Ask the agent. It can read your
+files, suggest fixes, even make edits directly. No more digging through docs or
+Stack Overflow rabbit holes.
 
 {/* ------------------------------------------------------------------ */}
-{/* VIDEO 3: The Sensei Loop                                           */}
-{/* Record: Start in Neovim (Cmd+2), hit a config issue or question,   */}
+{/* VIDEO 3: The Sensei Loop */}
+{/* Record: Start in Neovim (Cmd+2), hit a config issue or question, */}
 {/* Cmd+1 to OpenCode, type a quick question, see response, Cmd+2 back */}
-{/* to Neovim. Show the rapid switching. ~10-15 seconds.               */}
+{/* to Neovim. Show the rapid switching. ~10-15 seconds. */}
 {/* ------------------------------------------------------------------ */}
+
 <Video
   client:load
   src="/videos/opencode.mp4"
@@ -129,16 +131,18 @@ Here's what I'm running:
   fast and configurable
 - **[Zsh](https://www.zsh.org/)** – better shell experience with plugins and
   themes
-- **[Neovim](https://neovim.io/)** with sensible defaults via
-  **[AstroNvim](https://astronvim.com/)*  
-- **[OpenCode](https://opencode.ai)** – terminal driven AI agent for agentic workflows 
-- **[Git dotfiles](https://github.com/vsanka14/vsankar-dotfiles/tree/main)** – everything versioned so I can replicate the setup anywhere
+- **[Neovim](https://neovim.io/)** with sensible defaults
+  via \*_[AstroNvim](https://astronvim.com/)_
+- **[OpenCode](https://opencode.ai)** – terminal driven AI agent for agentic
+  workflows
+- **[Git dotfiles](https://github.com/vsanka14/vsankar-dotfiles/tree/main)** –
+  everything versioned so I can replicate the setup anywhere
 
 ## Wrapping Up
 
 The result? A snappy, distraction-free setup where everything is a keystroke
 away. Combine tools built for discoverability with an AI assistant to help when
-you're stuck, and the terminal stops being scary. 
+you're stuck, and the terminal stops being scary.
 
 I'm only a few days into this workflow but genuinely enjoying it so far. The
 setup will keep evolving—tmux for session management, avante.nvim for in-editor
