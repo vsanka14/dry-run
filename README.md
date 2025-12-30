@@ -38,6 +38,24 @@ All commands are run from the root of the project, from a terminal:
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro -- --help` | Get help using the Astro CLI                     |
 
+## 🎬 Video Compression
+
+Videos in `public/videos/` are compressed using ffmpeg with the following settings:
+
+```bash
+ffmpeg -i input.mov -c:v libx264 -profile:v high -pix_fmt yuv420p -b:v 420k -an output.mp4
+```
+
+| Flag | Description |
+| :--- | :---------- |
+| `-c:v libx264` | H.264 codec for broad compatibility |
+| `-profile:v high` | High profile for better compression efficiency |
+| `-pix_fmt yuv420p` | Standard pixel format for web compatibility |
+| `-b:v 420k` | Target bitrate ~420 kbps (achieves ~1-1.5MB for 20-30s videos) |
+| `-an` | Strip audio track |
+
+This achieves ~10-15x compression ratio from screen recording sources.
+
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
