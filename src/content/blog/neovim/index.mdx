@@ -1,0 +1,124 @@
+---
+title: "Switching to a Terminal-Based Workflow"
+description: "Using Wezterm, Neovim & OpenCode"
+date: 2025-12-29
+tags: ["tooling"]
+---
+
+import { WorkflowVideo } from "components/WorkflowVideo";
+
+I've used Vim sparingly over the past couple years, mostly sticking to some
+rudimentary vim motions to write git commit messages at work and some curious
+tinkering on personal projects. I always wanted to level up to a more advanced
+workflow with Vim/NeoVim, but the barrier felt insurmountable. 
+
+Vim on its own is tough enough,
+and while I'd become somewhat comfortable with it, Neovim seemed way too
+daunting. Every time I tried, I'd just end up crawling back to VS Code or
+Cursor. That changed when I finally stumbled onto the right approach.
+
+## The Philosophy: Why Terminal First?
+
+A keyboard-centric workflow is just faster. No reaching for the mouse, no
+context switching between apps. There's something satisfying about having
+everything at your fingertips. And then there's the intangible part: it turns your dev environment into this
+little toy you can keep tinkering with. Some may call it frivolous, but it made coding fun again for me. 
+
+[WezTerm](https://wezfurlong.org/wezterm/) is what makes this possible for me.
+It's a true color terminal—essential for themes and syntax highlighting to
+actually look right. The config is written in Lua (same as Neovim) and
+auto-reloads when you save it, so you get instant feedback while tinkering. Out of
+the box it supports image rendering, split panes, and tabs with easy keyboard
+navigation. It's just a joy to use.
+
+
+{/* ------------------------------------------------------------------ */}
+{/* VIDEO 1: The Vibe Shot                                             */}
+{/* Record: Open WezTerm, show the background/theme, run `ls` or `eza` */}
+{/* in a project directory to show icons + colors. ~5-8 seconds.       */}
+{/* ------------------------------------------------------------------ */}
+<WorkflowVideo
+  src="/videos/workflow.mp4"
+  caption="WezTerm with 3 tabs: Neovim, OpenCode, and shell. Cmd+n switches tabs instantly."
+/>
+
+## The Learning Breakthrough
+
+Vim/Neovim transitions usually fail because of the steep learning curve. You're
+staring at a blank screen, expected to learn Lua, figure out configs, set up
+LSPs, install plugins—all from scratch. It's a lot. My breakthrough came from
+two things that turned that intimidating blank screen into something I could
+actually explore:
+
+### 1. AstroNvim: Solid Defaults Out of the Box
+
+[AstroNvim](https://astronvim.com/) gave me a polished, IDE-like experience out
+of the box. No fiddling with configs for hours before getting started. It ships
+with sensible defaults and a curated set of plugins that just work:
+[neo-tree](https://github.com/nvim-neo-tree/neo-tree.nvim) for file exploration,
+[telescope](https://github.com/nvim-telescope/telescope.nvim) for fuzzy finding,
+and [treesitter](https://github.com/nvim-treesitter/nvim-treesitter) for syntax
+highlighting. It felt familiar coming from VS Code.
+
+But the best plugin it came with was
+[which-key](https://github.com/folke/which-key.nvim). This was transformational
+for me. Instead of memorizing hundreds of keybindings, which-key shows you
+what's possible in real-time. Hit the `Space` leader key and it reveals options
+for file searching, toggling the explorer, opening LSP tools. Start a vim motion
+like `y` and it shows you yanking options as you type. You learn by exploring,
+not memorizing. It's what finally made vim motions click.
+
+{/* ------------------------------------------------------------------ */}
+{/* VIDEO 2: Discoverability Demo                                      */}
+{/* Record: In Neovim, press Space to show which-key menu, navigate    */}
+{/* to file search (Space+f+f). Then press y to show yank options.     */}
+{/* ~8-12 seconds.                                                     */}
+{/* ------------------------------------------------------------------ */}
+<WorkflowVideo
+  src="/videos/astrovim.mp4"
+  caption="AstroNvim plugins in action: neo-tree for file navigation, telescope for fuzzy finding, and which-key revealing available motions."
+/>
+
+### 2. OpenCode as the Sensei
+
+This was the real game-changer. Having a terminal-driven AI agent running
+alongside Neovim meant I always had a patient tutor on standby—one that fits
+the keyboard-centric philosophy. No switching to a browser or GUI app, just
+`Cmd+1` for [OpenCode](https://opencode.ai), `Cmd+2` for Neovim. Stuck on some
+weird Lua config? Ask the agent. LSP not working? Ask the agent. It can read
+your files, suggest fixes, even make edits directly. No more digging through
+docs or Stack Overflow rabbit holes.
+
+{/* ------------------------------------------------------------------ */}
+{/* VIDEO 3: The Sensei Loop                                           */}
+{/* Record: Start in Neovim (Cmd+2), hit a config issue or question,   */}
+{/* Cmd+1 to OpenCode, type a quick question, see response, Cmd+2 back */}
+{/* to Neovim. Show the rapid switching. ~10-15 seconds.               */}
+{/* ------------------------------------------------------------------ */}
+<WorkflowVideo
+  src="/videos/opencode.mp4"
+  caption="Neovim in tab 1, OpenCode in tab 2. Cmd+1/Cmd+2 to swap—ask questions, tweak configs, repeat."
+/>
+
+Learning by doing, getting immediate answers when stuck—that's what finally made
+it click.
+
+## The Stack
+
+Here's what I'm running:
+
+- **[WezTerm](https://wezfurlong.org/wezterm/)** – GPU-accelerated terminal,
+  fast and configurable
+- **[Zsh](https://www.zsh.org/)** – better shell experience with plugins and
+  themes
+- **[Neovim](https://neovim.io/)** with sensible defaults via
+  **[AstroNvim](https://astronvim.com/)*  
+- **[OpenCode](https://opencode.ai)** – terminal driven AI agent for agentic workflows 
+- **[Git dotfiles](https://github.com/vsanka14/vsankar-dotfiles/tree/main)** – everything versioned so I can replicate the setup anywhere
+
+## Wrapping Up
+
+The result? A snappy, distraction-free setup where everything is a keystroke
+away. Combine tools built for discoverability with an AI assistant to help when
+you're stuck, and the terminal stops being scary. It's genuinely become my
+favorite way to work.
