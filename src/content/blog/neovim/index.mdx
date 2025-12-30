@@ -7,22 +7,37 @@ tags: ["tooling"]
 
 import { Video } from "components/Video";
 
-I've used Vim sparingly over the past couple years, mostly sticking to some
-rudimentary vim motions to write git commit messages at work and some curious
-tinkering on personal projects. I always wanted to level up to a more advanced
-workflow with Vim/NeoVim, but the barrier felt insurmountable. 
+I've always preferred working on a single screen: just my MacBook and no external
+monitors. At work I'd sometimes use a
+second display and saw some value in it. But largely, my setup was already leaning this way:
+a single screen with VS Code or Cursor in one macOS desktop, Chrome in another, terminal in a third, switching
+between them with `Cmd+Tab` or a three-finger swipe.
 
-Vim on its own is tough enough,
-and while I'd become somewhat comfortable with it, Neovim seemed way too
-daunting. Every time I tried, I'd just end up crawling back to VS Code or
-Cursor. That changed when I finally stumbled onto the right approach.
+I've used Vim sparingly over the past couple years—mostly rudimentary vim
+motions for git commit messages at work and some curious tinkering on personal
+projects. I always wanted to level up to a more advanced workflow with
+Vim/Neovim, but the barrier felt insurmountable. 
+
+Vim on its own is tough
+enough, and while I'd become somewhat comfortable with it, Neovim seemed way
+too daunting. Every time I tried, I'd just end up crawling back to VS Code or
+Cursor. That changed when I finally stumbled onto the right approach during this holiday break.
 
 ## The Philosophy: Why Terminal First?
 
-A keyboard-centric workflow is just faster. No reaching for the mouse, no
-context switching between apps. There's something satisfying about having
-everything at your fingertips. And then there's the intangible part: it turns your dev environment into this
-little toy you can keep tinkering with. Some may call it frivolous, but it made coding fun again for me. 
+You only look at one thing at a time. Multiple monitors don't help much if your
+eyes can only focus on one screen. What matters is how quickly and
+intentionally you can switch contexts.
+
+That's where keyboard-driven workflows shine. Switching via keybindings is
+instant—no reaching for the mouse, no hunting for windows. Context switching
+still happens, but it's deliberate and frictionless. You decide when to switch,
+and it happens immediately.
+
+The terminal is what makes this possible. It's inherently keyboard-first, and
+everything can live in one app. It feels snappier. And there's the intangible
+part: it turns your dev environment into a little toy you can keep tinkering
+with. Some may call it frivolous, but it made coding fun again for me. 
 
 [WezTerm](https://wezfurlong.org/wezterm/) is what makes this possible for me.
 It's a true color terminal—essential for themes and syntax highlighting to
@@ -86,7 +101,7 @@ not memorizing. It's what finally made vim motions click.
 This was the real game-changer. Having a terminal-driven AI agent running
 alongside Neovim meant I always had a patient tutor on standby—one that fits
 the keyboard-centric philosophy. No switching to a browser or GUI app, just
-`Cmd+1` for [OpenCode](https://opencode.ai), `Cmd+2` for Neovim. Stuck on some
+`Cmd+1` for Neovim and `Cmd+2` for [OpenCode](https://opencode.ai). Stuck on some
 weird Lua config? Ask the agent. LSP not working? Ask the agent. It can read
 your files, suggest fixes, even make edits directly. No more digging through
 docs or Stack Overflow rabbit holes.
@@ -123,5 +138,8 @@ Here's what I'm running:
 
 The result? A snappy, distraction-free setup where everything is a keystroke
 away. Combine tools built for discoverability with an AI assistant to help when
-you're stuck, and the terminal stops being scary. It's genuinely become my
-favorite way to work.
+you're stuck, and the terminal stops being scary. 
+
+I'm only a few days into this workflow but genuinely enjoying it so far. The
+setup will keep evolving—tmux for session management, avante.nvim for in-editor
+AI—but this is a solid foundation. More to come as I dig deeper.
