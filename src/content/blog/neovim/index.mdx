@@ -5,7 +5,7 @@ date: 2025-12-29
 tags: ["tooling"]
 ---
 
-import { WorkflowVideo } from "components/WorkflowVideo";
+import { Video } from "components/Video";
 
 I've used Vim sparingly over the past couple years, mostly sticking to some
 rudimentary vim motions to write git commit messages at work and some curious
@@ -37,7 +37,8 @@ navigation. It's just a joy to use.
 {/* Record: Open WezTerm, show the background/theme, run `ls` or `eza` */}
 {/* in a project directory to show icons + colors. ~5-8 seconds.       */}
 {/* ------------------------------------------------------------------ */}
-<WorkflowVideo
+<Video
+  client:load
   src="/videos/workflow.mp4"
   caption="WezTerm with 3 tabs: Neovim, OpenCode, and shell with in-built split panes functionality. Cmd+n switches tabs instantly."
 />
@@ -74,7 +75,8 @@ not memorizing. It's what finally made vim motions click.
 {/* to file search (Space+f+f). Then press y to show yank options.     */}
 {/* ~8-12 seconds.                                                     */}
 {/* ------------------------------------------------------------------ */}
-<WorkflowVideo
+<Video
+  client:load
   src="/videos/astronvim.mp4"
   caption="AstroNvim plugins in action: neo-tree for file navigation, telescope for fuzzy finding, and which-key revealing available motions."
 />
@@ -95,7 +97,8 @@ docs or Stack Overflow rabbit holes.
 {/* Cmd+1 to OpenCode, type a quick question, see response, Cmd+2 back */}
 {/* to Neovim. Show the rapid switching. ~10-15 seconds.               */}
 {/* ------------------------------------------------------------------ */}
-<WorkflowVideo
+<Video
+  client:load
   src="/videos/opencode.mp4"
   caption="Neovim in tab 1, OpenCode in tab 2. Cmd+1/Cmd+2 to swap—ask questions, tweak configs, repeat."
 />
