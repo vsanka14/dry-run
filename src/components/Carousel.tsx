@@ -1,5 +1,5 @@
-import React from "react";
-import type { ReactNode } from "react";
+import { useState } from "react";
+import type { ReactNode, KeyboardEvent } from "react";
 import { Pane } from "./Pane";
 
 interface CarouselStep {
@@ -19,12 +19,12 @@ export const Carousel = ({
   className = "",
   contentHeight = "min-h-[300px]",
 }: CarouselProps) => {
-  const [step, setStep] = React.useState(0);
+  const [step, setStep] = useState(0);
 
   const next = () => setStep((s) => Math.min(s + 1, steps.length - 1));
   const prev = () => setStep((s) => Math.max(s - 1, 0));
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === "ArrowRight") {
       next();
     } else if (e.key === "ArrowLeft") {

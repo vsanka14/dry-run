@@ -1,0 +1,127 @@
+---
+title: "Binary Tree Level Order Traversal"
+description:
+  "Understanding BFS traversal with visual examples and a code dry run"
+date: 2025-12-31
+tags: ["javascript", "algorithms"]
+---
+
+import { TreeTraversalCarousel } from "./components/TreeTraversal";
+import { DryRunCarousel } from "./components/LevelOrderDryRun";
+
+## The Problem
+
+Given a binary tree, return the values of its nodes grouped by level, from top
+to bottom and left to right within each level.
+
+```
+        3
+       / \
+      9   20
+          / \
+         15  7
+```
+
+**Expected output:** `[[3], [9, 20], [15, 7]]`
+
+This is a classic BFS (Breadth-First Search) problem. Unlike DFS which goes deep
+first, BFS explores all nodes at the current depth before moving to the next
+level - exactly what we need here.
+
+## Tree Node Setup
+
+We'll use a simple node structure:
+
+```javascript
+class TreeNode {
+  constructor(val, left = null, right = null) {
+    this.val = val;
+    this.left = left;
+    this.right = right;
+  }
+}
+
+// Build our example tree
+const root = new TreeNode(
+  3,
+  new TreeNode(9),
+  new TreeNode(20, new TreeNode(15), new TreeNode(7))
+);
+```
+
+## The Intuition: BFS with a Queue
+
+The key insight is using a **queue** to process nodes in FIFO order:
+
+1. Start with the root in the queue
+2. For each level, note how many nodes are currently in the queue - that's your
+   level size
+3. Process exactly that many nodes, adding their children to the queue
+4. Repeat until the queue is empty
+
+The `levelSize` variable is crucial: it captures the queue length _before_ we
+start processing, so we know exactly how many nodes belong to the current level
+vs. the next one.
+
+<TreeTraversalCarousel client:load />
+
+## Implementation
+
+```javascript
+function levelOrder(root) {
+  if (!root) return [];
+
+  const result = [];
+  const queue = [root];
+
+  while (queue.length > 0) {
+    const levelSize = queue.length;
+    const currentLevel = [];
+
+    for (let i = 0; i < levelSize; i++) {
+      const node = queue.shift();
+      currentLevel.push(node.val);
+
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
+    }
+
+    result.push(currentLevel);
+  }
+
+  return result;
+}
+```
+
+Key points:
+
+- **Line 7**: `levelSize` captures queue length at the start of each level
+- **Line 10**: The for loop processes exactly `levelSize` nodes
+- **Lines 14-15**: Children are added to the queue for the _next_ level
+- **Line 18**: After processing all nodes at this level, push to result
+
+## Dry Run: Tracing the Algorithm
+
+Let's trace through the algorithm step by step with our example tree:
+
+<DryRunCarousel client:load />
+
+## Complexity Analysis
+
+**Time: O(n)** - We visit each node exactly once. The `shift()` operation is
+O(n) for arrays in JavaScript, but we could optimize this using a proper queue
+implementation or index tracking.
+
+**Space: O(n)** - The queue holds at most one level at a time. In the worst
+case (a complete binary tree), the bottom level has roughly n/2 nodes.
+
+## Variations
+
+This pattern extends to many tree problems:
+
+- **Right side view**: Take only the last node from each level
+- **Zigzag traversal**: Alternate direction each level
+- **Level averages**: Compute average value per level
+- **Largest value per level**: Track max while processing
+
+The core BFS-with-level-tracking pattern remains the same.
