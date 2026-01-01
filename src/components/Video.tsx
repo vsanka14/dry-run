@@ -1,5 +1,5 @@
 interface VideoProps {
-  src?: string;
+  src: string;
   poster?: string;
   caption?: string;
 }
