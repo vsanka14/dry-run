@@ -10,7 +10,7 @@ const posts = (await getCollection("blog")).sort(
 
 <Layout title="dryrun - Vasisht's blog" isHomePage={true} wide>
   <main>
-    <section class="space-y-4">
+    <section class="flex flex-col">
       {
         posts.map((post) => (
           <Post

@@ -8,53 +8,41 @@ interface PostProps {
   tags?: string[];
 }
 
-export const Post = ({
-  title,
-  description,
-  date,
-  slug,
-  tags = [],
-}: PostProps) => {
+export const Post = ({ title, date, slug, tags = [] }: PostProps) => {
   const formattedDate = date.toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
   });
 
   return (
-    <article className="group">
-      <a href={`/blog/${slug}`} className="block hover:no-underline">
-        <div className="p-4 border border-secondary/60 rounded-lg bg-primary/40 backdrop-blur-md transition-all duration-200 hover:border-accent/40 hover:bg-primary/60">
-          <div className="flex items-start justify-between gap-4 mb-3">
-            <h3 className="text-lg text-text group-hover:text-accent transition-colors font-semibold">
-              {title}
-            </h3>
-            <time className="text-xs text-text-muted whitespace-nowrap mt-1">
-              {formattedDate}
-            </time>
-          </div>
-
-          <p className="text-sm text-text-muted leading-relaxed mb-4">
-            {description}
-          </p>
-
-          {tags.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              {tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-xs px-2 py-1 rounded"
-                  style={{
-                    backgroundColor: `${tagColor(tag)}33`,
-                    color: tagColor(tag),
-                  }}
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          )}
+    <div className="flex items-baseline gap-3 py-2">
+      <time className="text-xs text-text-muted whitespace-nowrap shrink-0">
+        {formattedDate}
+      </time>
+      <div className="flex-1">
+        <a
+          href={`/blog/${slug}`}
+          className="text-text no-underline hover:text-accent hover:underline underline-offset-4 transition-colors"
+        >
+          {title}
+        </a>
+      </div>
+      {tags.length > 0 && (
+        <div className="flex flex-wrap justify-end gap-2 shrink-0">
+          {tags.map((tag) => (
+            <span
+              key={tag}
+              className="text-xs px-2 py-1 rounded"
+              style={{
+                backgroundColor: `${tagColor(tag)}33`,
+                color: tagColor(tag),
+              }}
+            >
+              {tag}
+            </span>
+          ))}
         </div>
-      </a>
-    </article>
+      )}
+    </div>
   );
 };
