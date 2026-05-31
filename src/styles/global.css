@@ -46,15 +46,15 @@
 }
 
 @theme {
-  /* Minimal dark palette */
-  --color-primary: #121417;
-  --color-secondary: #393e46;
-  --color-accent: #ffd369;
-  --color-text: #eeeeee;
-  --color-text-muted: #9ca3af;
+  /* Tokyo Night (Night) palette */
+  --color-primary: #0d0d14;
+  --color-secondary: #24283b;
+  --color-accent: #bb9af7;
+  --color-text: #c0caf5;
+  --color-text-muted: #a9b1d6;
 
   /* Code block colors */
-  --color-code-bg: #1a1f27;
+  --color-code-bg: #1f2335;
 
   /* Font */
   --font-sans: "Source Sans Pro", system-ui, sans-serif;
@@ -67,7 +67,7 @@
   }
 
   body {
-    @apply font-sans bg-primary text-text antialiased;
+    @apply font-sans text-text antialiased;
   }
 
   /* Code blocks */
@@ -127,4 +127,38 @@
 
 .group:hover .logo-text {
   color: var(--color-accent);
+}
+
+/*
+ * Background gradient sampled from the pixel-art night-city reflection scene
+ * (navy sky -> indigo -> purple clouds -> mauve water -> blue), fixed behind
+ * the frosted content panels.
+ */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(4, 5, 11, 0.85), rgba(4, 5, 11, 0.85)),
+    linear-gradient(
+      to bottom,
+    #000b21 0%,
+    #01091d 7%,
+    #010626 13%,
+    #02073b 20%,
+    #040b50 27%,
+    #0d0e61 33%,
+    #1b117e 40%,
+    #321184 47%,
+    #491a63 53%,
+    #120f44 60%,
+    #3e2563 67%,
+    #834b7a 73%,
+    #6f4878 80%,
+    #463577 87%,
+    #2a2b72 93%,
+    #1e266d 100%
+  );
 }

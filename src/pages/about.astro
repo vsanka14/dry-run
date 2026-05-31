@@ -6,8 +6,9 @@ import bike from "assets/bike.jpg";
 import george from "assets/george.jpg";
 ---
 
-<Layout title="About" hideNav={true}>
+<Layout title="About" hideNav={true} wide>
   <main>
+    <div class="rounded-2xl border border-secondary/50 bg-primary/45 backdrop-blur-md p-5 md:p-8 shadow-2xl shadow-black/40">
     <h1 class="text-3xl font-semibold text-text mb-8">about</h1>
 
     <div class="space-y-6 text-text-muted leading-relaxed">
@@ -154,5 +155,6 @@ import george from "assets/george.jpg";
         </a>
       </div>
     </section>
+    </div>
   </main>
 </Layout>

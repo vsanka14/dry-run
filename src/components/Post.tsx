@@ -1,3 +1,5 @@
+import { tagColor } from "../utils/tagColor";
+
 interface PostProps {
   title: string;
   description: string;
@@ -21,7 +23,7 @@ export const Post = ({
   return (
     <article className="group">
       <a href={`/blog/${slug}`} className="block hover:no-underline">
-        <div className="p-3 border border-secondary rounded-lg transition-all duration-200 hover:border-accent/40 hover:bg-secondary/20">
+        <div className="p-4 border border-secondary/60 rounded-lg bg-primary/40 backdrop-blur-md transition-all duration-200 hover:border-accent/40 hover:bg-primary/60">
           <div className="flex items-start justify-between gap-4 mb-3">
             <h3 className="text-lg text-text group-hover:text-accent transition-colors font-semibold">
               {title}
@@ -40,7 +42,8 @@ export const Post = ({
               {tags.map((tag) => (
                 <span
                   key={tag}
-                  className="text-xs px-2 py-1 bg-accent/20 text-accent rounded"
+                  className="text-xs px-2 py-1 rounded"
+                  style={{ backgroundColor: `${tagColor(tag)}33`, color: tagColor(tag) }}
                 >
                   {tag}
                 </span>

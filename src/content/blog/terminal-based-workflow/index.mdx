@@ -1,153 +1,103 @@
 ---
-title: "Switching to a Terminal-Based Workflow"
-description: "Using Wezterm, Neovim & OpenCode"
-date: 2025-12-29
-tags: ["tooling"]
+title: "Switching to a Keyboard-First Terminal-Based Workflow"
+description: "Six months in: a single-screen, keyboard-driven, terminal-only dev setup, and the reasoning behind it."
+date: 2026-05-27
+tags: ["tooling", "terminal"]
 ---
 
 import { Video } from "components/Video";
 
-I've always preferred working on a single screen: just my MacBook and no
-external monitors. At work I'd sometimes use a second display and saw some value
-in it. But largely, my setup was already leaning this way: a single screen with
-VS Code or Cursor in one macOS desktop, Chrome in another, terminal in a third,
-switching between them with `Cmd+Tab` or a three-finger swipe.
+For the past six months my whole dev workflow has lived on a single screen. Most of the time that's the laptop.
+Sometimes I plug into an external monitor, but then the external is the only screen I look at, and the laptop sits
+closed on a stand acting more like a CPU than a display. Either way, one screen. Keyboard for everything. Terminal for
+everything. No IDE.
 
-I've used Vim sparingly over the past couple years—mostly rudimentary vim
-motions for git commit messages at work and some curious tinkering on personal
-projects. I always wanted to level up to a more advanced workflow with
-Vim/Neovim, but the barrier felt insurmountable.
+At work I used to run two displays. Laptop on one side, external on the other, with apps mapped to real estate by zone:
+browser on the external, editor center, Slack on the laptop, terminal floating somewhere. It looked organized. It
+wasn't.
 
-Vim on its own is tough enough, and while I'd become somewhat comfortable with
-it, Neovim seemed way too daunting. Every time I tried, I'd just end up crawling
-back to VS Code or Cursor. That changed when I finally stumbled onto the right
-approach during this holiday break.
+This post is about the setup that replaced it. Why I built it the way I did, what it actually is, and what six months of
+living inside it has felt like.
 
-## The Philosophy: Why Terminal First?
+## The argument
 
-You only look at one thing at a time. Multiple monitors don't help much if your
-eyes can only focus on one screen. What matters is how quickly and intentionally
-you can switch contexts.
+Three convictions hold the whole thing together.
 
-That's where keyboard-driven workflows shine. Switching via keybindings is
-instant—no reaching for the mouse, no hunting for windows. Context switching
-still happens, but it's deliberate and frictionless. You decide when to switch,
-and it happens immediately.
+**Single screen.** You can only focus on one screen at a time, so a second monitor doesn't expand your focus; it just
+gives your eyes more places to glance. Something lights up on the laptop and you've lost your place in the editor on the
+other display. Even getting to what you glanced at is a chore: drag the cursor over, click to focus, alt-tab to hunt for
+the window. The "where was I?" tax just gets paid more often, on more screens. One screen flips that: it always shows
+what I told it to, and every switch is intentional.
 
-[WezTerm](https://wezfurlong.org/wezterm/) is what makes this possible for me.
-It's a true color terminal—essential for themes and syntax highlighting to
-actually look right. The config is written in Lua (same as Neovim) and
-auto-reloads when you save it, so you get instant feedback while tinkering. Out
-of the box it supports image rendering, split panes, and tabs with easy keyboard
-navigation. It's just a joy to use.
+**Keyboard-first.** The mouse is the slow lane. Reaching for the trackpad to click a tab, hunt for a window, drag a
+divider. Every one of those motions is a microsecond of friction and a thought interrupted. A keybinding is instant,
+deliberate, and stays in muscle memory. Once you've felt how fast a keyboard-driven workflow can be, mouse-driven
+anything feels like wading through syrup.
 
-{/* ------------------------------------------------------------------ */}
-{/* VIDEO 1: The Vibe Shot */}
-{/* Record: Open WezTerm, show the background/theme, run `ls` or `eza` */}
-{/* in a project directory to show icons + colors. ~5-8 seconds. */}
-{/* ------------------------------------------------------------------ */}
+**Terminal over IDEs.** IDEs force their own opinions on how you work, and they churn: I liked Cursor until it started
+rearranging its UI every other week and pushing a chat panel in front of the code. They're also tied to a language, so
+working across a Java service, a TypeScript app, and a Python script means juggling IntelliJ, VS Code, and something
+else, each with its own keybindings. A terminal-first setup sidesteps all of it. Neovim handles every language the same
+way, and tmux gives me one session per repo with panes a keystroke apart. That matters more now that an AI agent is part
+of every task: the screen fills up fast, and nothing keeps it organized like tmux.
 
-<Video
-  client:load
-  src="/videos/workflow.mp4"
-  caption="WezTerm with 3 tabs: Neovim, OpenCode, and shell with in-built split panes functionality. Cmd+n switches tabs instantly."
-/>
-
-## The Learning Breakthrough
-
-Vim/Neovim transitions usually fail because of the steep learning curve. You're
-staring at a blank screen, expected to learn Lua, figure out configs, set up
-LSPs, install plugins—all from scratch. It's a lot. My breakthrough came from
-two things that turned that intimidating blank screen into something I could
-actually explore:
-
-### 1. AstroNvim: Solid Defaults Out of the Box
-
-[AstroNvim](https://astronvim.com/) gave me a polished, IDE-like experience out
-of the box. No fiddling with configs for hours before getting started. It ships
-with sensible defaults and a curated set of plugins that just work:
-[neo-tree](https://github.com/nvim-neo-tree/neo-tree.nvim) for file exploration,
-[telescope](https://github.com/nvim-telescope/telescope.nvim) for fuzzy finding,
-and [treesitter](https://github.com/nvim-treesitter/nvim-treesitter) for syntax
-highlighting. It felt familiar coming from VS Code.
-
-But the best plugin it came with was
-[which-key](https://github.com/folke/which-key.nvim). This was transformational
-for me. Instead of memorizing hundreds of keybindings, which-key shows you
-what's possible in real-time. Hit the `Space` leader key and it reveals options
-for file searching, toggling the explorer, opening LSP tools. Start a vim motion
-like `y` and it shows you yanking options as you type. You learn by exploring,
-not memorizing. It's what finally made vim motions click.
-
-{/* ------------------------------------------------------------------ */}
-{/* VIDEO 2: Discoverability Demo */}
-{/* Record: In Neovim, press Space to show which-key menu, navigate */}
-{/* to file search (Space+f+f). Then press y to show yank options. */}
-{/* ~8-12 seconds. */}
+{/* ------------------------------------------------------------------ */} {/* HERO VIDEO */}
+{/* Record: Full workflow montage. Workspace switch (Aerospace), then */}
+{/* tmux session swap, then nvim edit, then flip to the agent pane, */}
+{/* ask something, flip back to nvim. All keystrokes, no mouse. ~20-30s. */}
 {/* ------------------------------------------------------------------ */}
 
 <Video
   client:load
-  src="/videos/astronvim.mp4"
-  caption="AstroNvim plugins in action: neo-tree for file navigation, telescope for fuzzy finding, and which-key revealing available motions."
+  src="/videos/terminal-series/part-1-fundamentals/hero.mp4"
+  caption="The whole stack in 30 seconds. All keystrokes."
 />
 
-### 2. OpenCode as the Sensei
+## The stack
 
-This was the real game-changer. AstroNvim gave me solid defaults, but
-[OpenCode](https://opencode.ai) helped me extend my Neovim config to everything
-I actually needed: LSP support for the languages I use,
-[gitsigns](https://github.com/lewis6991/gitsigns.nvim),
-[diffview](https://github.com/sindrets/diffview.nvim),
-[lazygit](https://github.com/jesseduffield/lazygit),
-[conform](https://github.com/stevearc/conform.nvim) for auto-formatting on save,
-and the
-[OpenCode Neovim integration](https://opencode.ai/docs/integrations/neovim)
-itself. A terminal-driven AI agent that fits the keyboard-centric philosophy—no
-switching to a browser, just `Cmd+1` for Neovim and `Cmd+2` for OpenCode. Stuck
-on a weird Lua config? LSP misbehaving? Ask the agent. It reads your files,
-suggests fixes, makes edits directly. No more doc rabbit holes.
+The setup nests. From the outside in:
 
-{/* ------------------------------------------------------------------ */}
-{/* VIDEO 3: The Sensei Loop */}
-{/* Record: Start in Neovim (Cmd+2), hit a config issue or question, */}
-{/* Cmd+1 to OpenCode, type a quick question, see response, Cmd+2 back */}
-{/* to Neovim. Show the rapid switching. ~10-15 seconds. */}
-{/* ------------------------------------------------------------------ */}
+- **Aerospace**: tiling window manager for macOS. Five workspaces, each holding a specific app: browser, terminal,
+  Slack, mail/calls, and a misc bucket. Whatever lives on the workspace I'm on is all I see.
+- **Kitty**: my terminal emulator, though it could be any emulator with the basics Neovim and tmux lean on: true color,
+  undercurl for diagnostics, and italics. I picked it for the feel: snappy, clean ligature rendering, native cursor
+  trails. The config stays light. Most of the heavy lifting happens one layer down, in tmux, which is platform agnostic.
+- **Tmux**: runs inside Kitty. One session per repo, a single keystroke to jump between them. Each session splits into
+  windows, each window into panes.
+- **Neovim**: the left pane of every session, where I write code.
+- **AI agent**: the right pane. Editor and agent side by side, a keystroke apart.
 
-<Video
-  client:load
-  src="/videos/opencode.mp4"
-  caption="Neovim in tab 1, OpenCode in tab 2. Cmd+1/Cmd+2 to swap—ask questions, tweak configs, repeat."
-/>
+![The stack](/images/terminal-stack.png)
 
-Learning by doing, getting immediate answers when stuck—that's what finally made
-it click.
+## Theming and keybindings
 
-## The Stack
+Two things keep five separate tools from feeling like five separate tools.
 
-Here's what I'm running:
+**Tokyo Night, everywhere.** Aerospace's Sketchybar bar, Kitty's theme, tmux's status line, Neovim's colorscheme, the Oh
+My Posh prompt, even fzf. Same palette across all of them. It just feels cohesive.
 
-- **[WezTerm](https://wezfurlong.org/wezterm/)** – GPU-accelerated terminal,
-  fast and configurable
-- **[Zsh](https://www.zsh.org/)** – better shell experience with plugins and
-  themes
-- **[Neovim](https://neovim.io/)** with sensible defaults
-  via \*_[AstroNvim](https://astronvim.com/)_
-- **[OpenCode](https://opencode.ai)** – terminal driven AI agent for agentic
-  workflows
-- **[Git dotfiles](https://github.com/vsanka14/vsankar-dotfiles/tree/main)** –
-  everything versioned so I can replicate the setup anywhere
+**A semantic keybinding system, with vim motions where they belong.** Each layer owns its own prefix:
 
-## Wrapping Up
+- `Ctrl+*` → Aerospace (workspaces, window focus, modes)
+- `Alt+*` → Tmux (panes, sessions, windows)
+- `Leader+*` → Neovim (everything else)
 
-The result? A snappy, distraction-free setup where everything is a keystroke
-away. Combine tools built for discoverability with an AI assistant to help when
-you're stuck, and the terminal stops being scary.
+Vim motions run through all three layers underneath. Pane navigation in tmux, window navigation in Aerospace, normal
+usage in Neovim. After a few weeks I stopped thinking about any of it.
 
-I'm only a few days into this workflow but genuinely enjoying it so far. The
-setup will keep evolving—tmux for session management, avante.nvim for in-editor
-AI—but this is a solid foundation. More to come as I dig deeper.
+## Six months in
 
-All the configuration files for this setup are available in my
-[dotfiles repo](https://github.com/vsanka14/vsankar-dotfiles).
+The setup wasn't built in a day. It grew over six months of low-stakes tinkering: evenings, weekends, the occasional
+quiet weekday afternoon.
+
+What surprised me is how little of it I think about anymore. The keybindings are reflex. The peripheral cues live where
+they belong: workspace numbers in the menu bar, prefix-mode indicator in tmux, line numbers in nvim. Most of the time
+it's just me, the file I'm editing, and an AI agent in the next pane.
+
+What stuck most was the discipline of one app per workspace. Slack lives in workspace 3, mail in 4. They don't get to
+surface anywhere else. Notifications still happen, but I have to switch workspaces to see them, and that small bit of
+friction has done more for my focus than any "deep work" advice I've ever read.
+
+Each piece earns its slot now, and the whole thing feels buttery smooth.
+
+All of the config lives in my [dotfiles repo](https://github.com/vsanka14/vsankar-dotfiles).

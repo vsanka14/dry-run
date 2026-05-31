@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import Layout from "layouts/Layout.astro";
 import { Logo } from "components/Logo.jsx";
+import { tagColor } from "../../utils/tagColor";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -47,11 +48,13 @@ const jsonLd = {
   description={post.data.description}
   type="article"
   publishedDate={post.data.date}
+  wide
 >
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </Fragment>
   <main>
+    <div class="rounded-2xl border border-secondary/50 bg-primary/45 backdrop-blur-md p-5 md:p-8 shadow-2xl shadow-black/40">
     <article>
       <header class="mb-12">
         <h1 class="text-2xl md:text-3xl font-semibold text-text mb-4">
@@ -71,7 +74,10 @@ const jsonLd = {
             post.data.tags && post.data.tags.length > 0 && (
               <div class="flex gap-2">
                 {post.data.tags.map((tag: string) => (
-                  <span class="text-xs px-2 py-0.5 bg-accent/20 text-accent rounded">
+                  <span
+                    class="text-xs px-2 py-0.5 rounded"
+                    style={`background-color: ${tagColor(tag)}33; color: ${tagColor(tag)}`}
+                  >
                     {tag}
                   </span>
                 ))}
@@ -93,6 +99,7 @@ const jsonLd = {
         <Content />
       </div>
     </article>
+    </div>
 
     <hr class="border-secondary my-12" />
 
