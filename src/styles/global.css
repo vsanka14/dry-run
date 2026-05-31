@@ -82,7 +82,7 @@
 
   /* Inline code */
   :not(pre) > code {
-    @apply bg-secondary font-mono text-accent px-1.5 py-0.5 text-sm rounded;
+    @apply bg-secondary font-mono text-[#e0af68] px-1.5 py-0.5 text-sm rounded;
   }
 
   ::selection {
@@ -98,23 +98,26 @@
 .code-line-1,
 .code-line-2,
 .code-line-3 {
-  transition: stroke-opacity 0.3s ease, stroke-width 0.3s ease;
+  transition: stroke-opacity 0.3s ease, stroke-width 0.3s ease, stroke 0.3s ease;
   stroke-opacity: 0.7;
 }
 
 .group:hover .code-line-1 {
+  stroke: #9ece6a;
   stroke-opacity: 1;
   stroke-width: 2.5;
   transition-delay: 0s;
 }
 
 .group:hover .code-line-2 {
+  stroke: #9ece6a;
   stroke-opacity: 1;
   stroke-width: 2.5;
   transition-delay: 0.05s;
 }
 
 .group:hover .code-line-3 {
+  stroke: #9ece6a;
   stroke-opacity: 1;
   stroke-width: 2.5;
   transition-delay: 0.1s;

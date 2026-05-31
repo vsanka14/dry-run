@@ -43,7 +43,10 @@ export const Post = ({
                 <span
                   key={tag}
                   className="text-xs px-2 py-1 rounded"
-                  style={{ backgroundColor: `${tagColor(tag)}33`, color: tagColor(tag) }}
+                  style={{
+                    backgroundColor: `${tagColor(tag)}33`,
+                    color: tagColor(tag),
+                  }}
                 >
                   {tag}
                 </span>
