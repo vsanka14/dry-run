@@ -1,0 +1,77 @@
+---
+title: "The Fix for MCP Is a CLI"
+description: "Why I reach for native CLIs over MCP servers for almost everything I give an agent."
+date: 2026-05-31
+tags: ["tooling", "ai"]
+---
+
+Every new integration shows up as an MCP server now. Want your agent to touch GitHub, your database, the design tool,
+the ticket tracker? There's a server for it, and the pitch is always the same: install it, point your agent at it, done.
+I kept installing them. And I kept noticing that for most of what I actually do, I'd rather just give the agent the
+command-line tool it already knows.
+
+That's the whole post. For something like 99% of cases a CLI beats an MCP server, and the gap is not close. MCP has a
+real place. It's a lot smaller than the hype suggests.
+
+## The argument
+
+A few things hold this up.
+
+**Agents already know CLIs.** `git`, `gh`, `curl`, `jq`, `rg`, `psql`: these have been in the training data for years,
+with millions of examples of correct usage. The model knows the flags, the output formats, the common pipelines. An MCP
+tool is a brand new interface it has never seen, described to it once, in the current context window. One of these is a
+language the agent is fluent in. The other is a phrasebook you hand it at the door.
+
+**CLIs compose.** The Unix tools chain. You pipe `gh` into `jq`, filter, sort, hand the result to the next thing, all in
+a single line that runs in the shell and returns only what you asked for. MCP tools are islands. Each call is its own
+request and its own response, and every intermediate result has to travel back through the model before the next step
+can run.
+
+**There's nothing to run.** An MCP server is a process. You start it, keep it alive, update it, authenticate it, and
+debug it when it falls over. A CLI is a binary already sitting on the machine. The agent calls it the same way I would.
+
+**Tool definitions aren't free.** This is the part people skip. Every MCP server loads its tool definitions into the
+context window up front, before the agent has done anything. A handful of servers and you've spent tens of thousands of
+tokens just describing what's available. Anthropic, who created the protocol, published a post on exactly this: moving
+from loading every tool definition to having the agent write code that calls tools on demand took one workflow from
+150,000 tokens to 2,000. A 98.7% drop. The fix for MCP's context cost is to stop front-loading tools and let the model
+reach for them as code.
+
+In practice the difference is plain. Say I want the open pull requests I opened:
+
+```bash
+gh pr list --json number,title,author | jq '.[] | select(.author.login == "vsanka14")'
+```
+
+One line. It runs in the shell, filters in the shell, and hands the model back five rows instead of fifty. The MCP
+version is a server running in the background, a tool schema sitting in context, and the full result set flowing through
+the model so it can do the filtering itself. Same answer, more moving parts, more tokens.
+
+## Where MCP earns its place
+
+Smaller than I first thought. People reach for MCP whenever a service has no CLI, but most of those cases are just a
+plain HTTP API, and `curl` handles those fine. The agent knows curl too. "There's no command for it" is rarely the real
+problem.
+
+The one that actually held up for me was Google Docs and Sheets. Reading a doc, and more to the point writing edits
+straight into one, through a server that already understands the document model and has done the auth once. Doing that
+by hand against the API is miserable: nested batch-update payloads, OAuth, a request shape you relearn every time. There
+a server earns its keep, because it isn't wrapping a command I'd otherwise type. It's wrapping an API ugly enough that I
+never want to touch it directly, and stateful enough that doing it once in a server beats the agent reconstructing it
+from scratch on every call.
+
+That's the real shape of an MCP win. Not "there's no CLI for this," but "the thing underneath is painful and stateful
+enough that a server is worth it." It's a narrow target. Most tools aren't it.
+
+## The tell
+
+Here's what settled it for me. The loudest fix for MCP's biggest problem, the context cost, is to let the agent write
+code that calls the tools on demand instead of loading them all up front. Anthropic shipped it. Cloudflare shipped a
+version of it. It works.
+
+But look at what it is. You're giving the model a way to express what it wants as code and run it. That's a CLI with
+extra steps. The strongest argument against using MCP for everything is being made, in code, by the people who built MCP.
+
+I'm not against MCP. When I need it I reach for it, and it does the job. But the default has drifted. The question I ask
+now isn't "is there an MCP server for this," it's "is there already a tool the agent knows." Most of the time there is,
+and reaching for it is the simpler, cheaper, faster thing to do.
