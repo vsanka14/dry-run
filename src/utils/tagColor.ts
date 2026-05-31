@@ -17,6 +17,7 @@ const KNOWN: Record<string, string> = {
   tooling: "#7aa2f7", // blue
   terminal: "#9ece6a", // green
   javascript: "#e0af68", // yellow
+  ai: "#f7768e", //red
 };
 
 export function tagColor(tag: string): string {
