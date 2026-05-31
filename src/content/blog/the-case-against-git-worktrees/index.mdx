@@ -1,0 +1,72 @@
+---
+title: "Git Worktrees Aren't a Magic Bullet for Your Agents"
+description:
+  "Worktrees are a sharp tool, not the cure-all they get sold as. Learn the internals, then keep what fits your work."
+date: 2026-05-31
+tags: ["tooling", "ai"]
+---
+
+Git worktrees are having a moment. The pitch is that they're the way to run coding agents in parallel: one worktree per
+agent, each on its own branch, no collisions. Anthropic recommends it in the Claude Code docs, and there's a small genre
+of posts now about wiring worktrees up and turning four agents loose at once.
+
+They are not the magic bullet they get sold as. The pitch skips the internals, and on a heavy app the internals are the
+whole story. If you don't understand how a worktree actually works, you can follow the advice straight into a worse spot
+than where you started.
+
+## What a worktree actually shares
+
+The git object database and your refs, through a pointer back to the main `.git`. That's it. The working directory is
+brand new, the index is brand new, and every file git doesn't track, `node_modules`, build output, `.env`, every cache,
+is either absent or freshly duplicated. The part it shares, your commit history, is the part that was never expensive.
+The part it doesn't share is everything that makes a large app slow.
+
+## Where the weight is
+
+So an agent in a fresh worktree can't lean on anything to validate its work. It installs its own dependencies, boots its
+own dev server, its own test server. For a real app that's the whole cost of a working environment, paid again per
+worktree.
+
+And the apps I work in are big. The front end is north of a million lines and around 9.5GB on disk, close to 5GB of it
+`node_modules`; the services behind it run into the hundreds of thousands of lines, a few gigabytes each. None brings a
+dev or test server up quickly, and once it's up the working set is near 10GB. The git history is the small part, well
+under a gigabyte each. That's all a worktree saves you; everything else it hands back to rebuild, every time.
+
+Then there's the part nobody mentions: ports. The dev and test servers want fixed ports, wired into config that assumes
+one checkout. A second environment fights for the same ones, so you're remapping them just to coexist. These apps were
+built before anyone pointed an agent at them; a worktree doesn't ease that, it just gives you a second place to fight
+it.
+
+<figure className="my-8 md:my-10">
+  <img className="w-full rounded-lg border border-secondary" src="/images/worktree-weight.png" alt="One worktree per agent on a heavy app: each worktree duplicates node_modules, dev and test servers, and fights for the same ports, while only the sub-gigabyte git history is shared" />
+  <figcaption className="mt-3 text-center text-sm italic text-text-muted">
+    Every worktree copies the expensive half: dependencies, both servers, the same contested ports. The only thing
+    shared is the git history, the part that was never the problem.
+  </figcaption>
+</figure>
+
+## Where worktrees still earn it
+
+I don't think worktrees are a mistake. They're genuinely good in cases mine just aren't.
+
+If your dependencies are light, none of this bites. A small or mid-size repo where install is seconds and there's no
+long-running server is the case every worktree tutorial is quietly written for. Compiled languages are another fit:
+keeping an expensive build warm on one branch while you check out another is exactly what a separate working directory
+is for. And a quick hotfix on a second branch without disturbing what you've got staged is cleaner through a worktree
+than through `git stash`. The common thread is a cheap or reusable environment. The moment the environment is the
+expensive part, the worktree stops paying for itself.
+
+## What I do instead
+
+I keep one dev server and one test server running against a single warm checkout. The agent does its work and pushes to
+remote; I pull the changes in and verify there. One environment, warm the whole time, instead of one provisioned and
+torn down per branch.
+
+I first tried this with the agent in a worktree of the same repo, then checking its branch out in the warm repo to
+verify. Git won't allow it: the same branch can't be checked out in two worktrees at once (`fatal: 'branch' is already
+checked out at ...`). That lands right on the move I want, since the whole point of the warm repo is to pull in the
+agent's finished branch and look at it. A separate clone sidesteps it: the agent pushes, I pull into the warm clone, done.
+The remote roundtrip I'd have called overhead is the clean path, the work arriving through git like anyone else's would.
+
+None of this makes worktrees bad. It makes them a tool with a shape, and that shape happens to fight mine. Learn what a
+worktree shares and what it refuses to do, hold it against how you really work, and keep what fits.
