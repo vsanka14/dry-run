@@ -67,14 +67,21 @@ The setup nests. From the outside in:
 - **Neovim**: the left pane of every session, where I write code.
 - **AI agent**: the right pane. Editor and agent side by side, a keystroke apart.
 
-![The stack](/images/terminal-stack.png)
+<figure className="my-8 md:my-10">
+  <img className="w-full rounded-lg border border-secondary" src="/images/terminal-stack.png" alt="The stack" />
+  <figcaption className="mt-3 text-center text-sm italic text-text-muted">
+    The setup nested from the outside in: Aerospace holds the workspace, Kitty runs tmux, and each tmux session puts
+    Neovim and the agent side by side.
+  </figcaption>
+</figure>
 
 ## Theming and keybindings
 
 Two things keep five separate tools from feeling like five separate tools.
 
-**[Tokyo Night](https://github.com/folke/tokyonight.nvim), everywhere.** the Sketchybar menu bar, Kitty's theme, tmux's status line, Neovim's colorscheme, the Oh
-My Posh prompt, even fzf. Same palette across all of them. It just feels cohesive.
+**[Tokyo Night](https://github.com/folke/tokyonight.nvim), everywhere.** the Sketchybar menu bar, Kitty's theme, tmux's
+status line, Neovim's colorscheme, the Oh My Posh prompt, even fzf. Same palette across all of them. It just feels
+cohesive.
 
 **A semantic keybinding system, with vim motions where they belong.** Each layer owns its own prefix:
 
