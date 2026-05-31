@@ -49,19 +49,19 @@ the model so it can do the filtering itself. Same answer, more moving parts, mor
 
 ## Where MCP earns its place
 
-Smaller than I first thought. People reach for MCP whenever a service has no CLI, but most of those cases are just a
-plain HTTP API, and `curl` handles those fine. The agent knows curl too. "There's no command for it" is rarely the real
-problem.
+Less than you'd think. The usual case for it is "this service has no CLI," but most of those services are a plain HTTP
+API, and `curl` reaches an API fine. The agent knows curl too. "There's no command for it" is rarely the real problem.
 
-The one that actually held up for me was Google Docs and Sheets. Reading a doc, and more to the point writing edits
-straight into one, through a server that already understands the document model and has done the auth once. Doing that
-by hand against the API is miserable: nested batch-update payloads, OAuth, a request shape you relearn every time. There
-a server earns its keep, because it isn't wrapping a command I'd otherwise type. It's wrapping an API ugly enough that I
-never want to touch it directly, and stateful enough that doing it once in a server beats the agent reconstructing it
-from scratch on every call.
+The one place I'd actually reach for MCP is a stateful session: live state on the other side that has to survive between
+calls. A browser the agent drives across a whole task, a database connection, a REPL. Playwright is the clearest case.
+It isn't wrapping a REST endpoint, it's exposing a running browser the agent snapshots, clicks, and types into, call
+after call, against one session. There's nothing stateless to curl there, because the session is the point. That one
+holds up.
 
-That's the real shape of an MCP win. Not "there's no CLI for this," but "the thing underneath is painful and stateful
-enough that a server is worth it." It's a narrow target. Most tools aren't it.
+Google Docs, which is the example I reached for first, doesn't. The API is genuinely unpleasant, so a server that hands
+you `read` and `replace` instead of raw batchUpdate JSON feels like a win. But go read one of those servers. Every tool
+is a thin wrapper over the REST API, and the auth is an OAuth token cached in a dotfile so you sign in once. That's not
+an argument for MCP. It's an argument for a good wrapper with a cached token, and a CLI is exactly that.
 
 ## The tell
 
