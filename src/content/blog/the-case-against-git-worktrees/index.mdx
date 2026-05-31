@@ -14,6 +14,16 @@ They are not the magic bullet they get sold as. The pitch skips the internals, a
 whole story. If you don't understand how a worktree actually works, you can follow the advice straight into a worse spot
 than where you started.
 
+## How a worktree works
+
+<figure className="my-8 md:my-10">
+  <img className="w-full rounded-lg border border-secondary" src="/images/worktree-anatomy.png" alt="One main repository's .git, holding the shared objects and refs, linked to three worktrees that each have their own working directory, index, and HEAD on their own branch" />
+</figure>
+
+`git worktree add ../feature a-branch` checks a branch out into its own directory, backed by the repo you already
+have, so it comes up close to instant. Every worktree keeps its own working directory, index, and `HEAD`, while they
+all share the one `.git`. That shared piece is the whole pitch, and what the next section weighs.
+
 ## What a worktree actually shares
 
 The git object database and your refs, through a pointer back to the main `.git`. That's it. The working directory is
