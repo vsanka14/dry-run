@@ -10,8 +10,8 @@ the ticket tracker? There's a server for it, and the pitch is always the same: i
 I kept installing them. And I kept noticing that for most of what I actually do, I'd rather just give the agent the
 command-line tool it already knows.
 
-That's the whole post. For something like 99% of cases a CLI beats an MCP server, and the gap is not close. MCP has a
-real place. It's a lot smaller than the hype suggests.
+For something like 99% of cases a CLI beats an MCP server, and the gap is not close. MCP has a real place. It's a lot
+smaller than the hype suggests.
 
 ## The argument
 
@@ -58,20 +58,8 @@ It isn't wrapping a REST endpoint, it's exposing a running browser the agent sna
 after call, against one session. There's nothing stateless to curl there, because the session is the point. That one
 holds up.
 
-Google Docs, which is the example I reached for first, doesn't. The API is genuinely unpleasant, so a server that hands
-you `read` and `replace` instead of raw batchUpdate JSON feels like a win. But go read one of those servers. Every tool
-is a thin wrapper over the REST API, and the auth is an OAuth token cached in a dotfile so you sign in once. That's not
-an argument for MCP. It's an argument for a good wrapper with a cached token, and a CLI is exactly that.
+## What I ask now
 
-## The tell
-
-Here's what settled it for me. The loudest fix for MCP's biggest problem, the context cost, is to let the agent write
-code that calls the tools on demand instead of loading them all up front. Anthropic shipped it. Cloudflare shipped a
-version of it. It works.
-
-But look at what it is. You're giving the model a way to express what it wants as code and run it. That's a CLI with
-extra steps. The strongest argument against using MCP for everything is being made, in code, by the people who built MCP.
-
-I'm not against MCP. When I need it I reach for it, and it does the job. But the default has drifted. The question I ask
-now isn't "is there an MCP server for this," it's "is there already a tool the agent knows." Most of the time there is,
-and reaching for it is the simpler, cheaper, faster thing to do.
+I'm not against MCP servers. When I need it I reach for it, and it does the job. But the default has drifted. The
+question I ask now isn't "is there an MCP server for this," it's "is there already a tool the agent knows." Most of the
+time there is, and reaching for it is the simpler, cheaper, faster thing to do.
