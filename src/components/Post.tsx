@@ -6,9 +6,10 @@ interface PostProps {
   date: Date;
   slug: string;
   tags?: string[];
+  readTime?: number;
 }
 
-export const Post = ({ title, date, slug, tags = [] }: PostProps) => {
+export const Post = ({ title, date, slug, tags = [], readTime }: PostProps) => {
   const formattedDate = date.toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
@@ -30,6 +31,11 @@ export const Post = ({ title, date, slug, tags = [] }: PostProps) => {
           <time className="text-xs text-text-muted whitespace-nowrap">
             {formattedDate}
           </time>
+          {readTime && (
+            <span className="text-xs text-text-muted whitespace-nowrap">
+              {readTime} min read
+            </span>
+          )}
           {tags.map((tag) => (
             <span
               key={tag}

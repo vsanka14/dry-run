@@ -2,6 +2,7 @@
 import Layout from "layouts/Layout.astro";
 import { Post } from "components/Post.jsx";
 import { getCollection } from "astro:content";
+import { readingTime } from "../utils/readingTime";
 
 const posts = (await getCollection("blog")).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
@@ -19,6 +20,7 @@ const posts = (await getCollection("blog")).sort(
             date={post.data.date}
             slug={post.slug}
             tags={post.data.tags}
+            readTime={readingTime(post.body)}
           />
         ))
       }
