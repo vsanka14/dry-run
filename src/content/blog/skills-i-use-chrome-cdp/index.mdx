@@ -1,0 +1,73 @@
+---
+title: "Skills I Use: chrome-cdp"
+description: "A skill that lets my agent drive the Chrome window I'm already logged into."
+date: 2026-10-23
+tags: ["tooling", "ai"]
+---
+
+Almost everything I hand an agent lives in the terminal. The exception is the browser. A lot of my work ends in a web
+app: checking a flow after a change, grabbing screenshots for a pull request, reading what a page actually rendered.
+The agent couldn't see any of it. `chrome-cdp` is the skill I wrote to fix that.
+
+## The problem with a fresh browser
+
+Most browser automation starts a clean browser, and clean means logged out. The apps I care about sit behind SSO and
+2FA, so a fresh headless Chrome hits a login wall before it does anything useful. Handing the agent my password isn't
+an option.
+
+So the skill skips that problem entirely. It connects to a real Chrome over the Chrome DevTools Protocol (CDP), with my
+session already in it.
+
+## How it works
+
+Three pieces.
+
+**`chrome-debug`**, a small shell script. Chrome 136 and later won't expose a remote debugging port on your normal
+profile directory, so the script copies my profile into a separate debug directory, starts Chrome with
+`--remote-debugging-port`, and prints the port. The copy brings the cookies along, so I'm already logged in. It also
+swaps the profile picture for a 🐞, so I always know which window belongs to the agent.
+
+**`cdp.mjs`**, a driver template. Playwright's `connectOverCDP` attaches to the running browser, and a few helpers
+cover what comes up every time: pick an open tab, open a background tab, click by text or `href`, and screenshot the
+smallest card that matches some text. The agent copies the template, edits only the actions block, runs it, and
+deletes it.
+
+```javascript
+// ---------------- ACTIONS (edit me) ----------------
+const page = await backgroundPage("example.com");
+await page.goto("https://example.com/settings", { waitUntil: "commit" });
+await page.waitForSelector("[role=main]");
+console.log("URL:", page.url());
+await shotCard(page, [/Notifications/, /Email/], "settings-card.png");
+// ---------------------------------------------------
+```
+
+**`SKILL.md`**, the workflow and the rules. This is the part that makes it something I trust in my real browser.
+
+## The rules
+
+- **Reuse before starting.** If a debug Chrome is already running, use it. Never start another one.
+- **Don't steal focus.** New tabs open in the background through CDP's `Target.createTarget`, and the agent never calls
+  `bringToFront()`. I keep working in my own windows while it works in its tab.
+- **Don't act for me.** It's my real session, so no submitting, saving, publishing, deleting, buying, or agreeing to
+  anything unless I asked.
+- **Stable selectors only.** `aria-label`, roles, `data-*` attributes, and visible text. Never hashed class names,
+  which change on every build.
+- **Stop at a login wall.** If a page wants a login or 2FA, the agent asks me to do it.
+- **Look at the screenshot.** The agent opens every PNG it captures before it says the task is done.
+- **Disconnect, don't close.** When it finishes, it drops the connection. My Chrome and my tabs stay put.
+
+## App references
+
+The skill is generic. Anything specific to one app lives in `references/<app>.md`: URLs, redirects, reliable
+selectors, and what not to touch. It started as a screenshot skill for a single app, and splitting the app details
+out is what made it useful everywhere else. Adding an app is one file and one row in a table.
+
+## What I use it for
+
+- Screenshots of a UI flow for a pull request.
+- Checking a change in the real app, with real data.
+- Reading the DOM to see what a page actually rendered, not what I think it rendered.
+
+In my [MCP post](/blog/the-fix-for-mcp-is-a-cli) I said a live browser session is the one place MCP really holds up.
+This is that same session without a server: a script, a port, and Playwright as a library.
