@@ -121,6 +121,16 @@ const pageTitle = isHomePage ? title : `${title} - ${BLOG_NAME}`;
         event.direction = event.to.pathname === "/" ? "back" : "forward";
       });
 
+      // Media parsed in the router's detached document fails with "no source"
+      // and does not retry when it is moved into the page, so reload it.
+      document.addEventListener("astro:after-swap", () => {
+        document
+          .querySelectorAll<HTMLMediaElement>("video, audio")
+          .forEach((media) => {
+            if (media.networkState === media.NETWORK_NO_SOURCE) media.load();
+          });
+      });
+
       // The logo's screen changes channel while the camera pans.
       document.addEventListener("astro:after-swap", () => {
         const logo = document.querySelector("header .group");
