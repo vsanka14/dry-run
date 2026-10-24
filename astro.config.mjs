@@ -9,6 +9,11 @@ import sitemap from "@astrojs/sitemap";
 // https://astro.build/config
 export default defineConfig({
   site: "https://dryrun.blog",
+  markdown: {
+    shikiConfig: {
+      theme: "rose-pine",
+    },
+  },
   vite: {
     plugins: [tailwindcss()],
     resolve: {

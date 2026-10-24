@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import { ClientRouter } from "astro:transitions";
 import avatar from "assets/avatar.jpg";
 import { Logo } from "components/Logo.jsx";
 import "styles/global.css";
@@ -77,39 +78,60 @@ const pageTitle = isHomePage ? title : `${title} - ${BLOG_NAME}`;
     />
     <slot name="head" />
     <title>{pageTitle}</title>
+    <ClientRouter />
   </head>
   <body class="min-h-screen">
     <div
       class:list={[
         wide ? "max-w-3xl" : "max-w-2xl",
-        "mx-auto px-4 md:px-6 py-12 md:py-16 w-full",
+        "mx-auto px-4 md:px-6 py-12 md:py-20 w-full",
       ]}
     >
-      <header class="mb-20 flex items-center justify-between">
+      <header
+        class="mb-16 flex justify-center"
+        style="view-transition-name: marquee"
+      >
         <Logo />
-        {
-          !hideNav && (
-            <nav>
-              <a
-                href="/about"
-                class="flex items-center gap-1.5 hover:no-underline group"
-              >
-                <span class="text-sm text-text-muted italic group-hover:text-accent transition-colors">
-                  by
-                </span>
-                <Image
-                  src={avatar}
-                  alt="Vasisht"
-                  width={32}
-                  height={32}
-                  class="w-8 h-8 rounded-full object-cover border-2 border-transparent group-hover:border-accent transition-colors"
-                />
-              </a>
-            </nav>
-          )
-        }
       </header>
       <slot />
+      {
+        !hideNav && (
+          <footer class="mt-16 flex justify-center">
+            <a
+              href="/about"
+              class="flex items-center gap-2 text-sm text-text-muted hover:text-accent hover:no-underline transition-colors group"
+            >
+              <span class="italic">by</span>
+              <Image
+                src={avatar}
+                alt=""
+                width={32}
+                height={32}
+                class="w-6 h-6 rounded-full object-cover border border-text-muted/40 group-hover:border-accent transition-colors"
+              />
+              <span>Vasisht</span>
+            </a>
+          </footer>
+        )
+      }
     </div>
+    <script>
+      // Moving deeper into the blog tilts down; returning to the lobby tilts up.
+      document.addEventListener("astro:before-preparation", (event) => {
+        event.direction = event.to.pathname === "/" ? "back" : "forward";
+      });
+
+      // The logo's screen changes channel while the camera pans.
+      document.addEventListener("astro:after-swap", () => {
+        const logo = document.querySelector("header .group");
+        if (!logo) return;
+        logo.classList.add("is-tuning");
+        logo.addEventListener("animationend", function done(event) {
+          if ((event as AnimationEvent).animationName !== "crt-switch") return;
+          logo.classList.remove("is-tuning");
+          logo.removeEventListener("animationend", done);
+        });
+      });
+    </script>
   </body>
 </html>

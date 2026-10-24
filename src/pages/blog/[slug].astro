@@ -6,7 +6,9 @@ import { tagColor } from "../../utils/tagColor";
 import { readingTime } from "../../utils/readingTime";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog");
+  const posts = (await getCollection("blog")).sort(
+    (a, b) => a.data.date.valueOf() - b.data.date.valueOf()
+  );
   return posts.map((post) => ({
     params: { slug: post.slug },
     props: { post },
@@ -56,14 +58,13 @@ const jsonLd = {
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </Fragment>
   <main>
-    <div class="rounded-2xl border border-secondary/50 bg-primary/45 backdrop-blur-md p-5 md:p-8 shadow-2xl shadow-black/40">
     <article>
-      <header class="mb-12">
-        <h1 class="text-2xl md:text-3xl font-semibold text-text mb-4">
+      <header class="mb-12 flex flex-col items-center text-center">
+        <h1 class="text-2xl md:text-3xl font-semibold text-text mb-5 leading-snug">
           {post.data.title}
         </h1>
-        <div class="flex items-center gap-4">
-          <time class="text-sm text-text-muted">
+        <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+          <time class="text-xs uppercase tracking-wider text-text-muted">
             {
               post.data.date.toLocaleDateString("en-US", {
                 year: "numeric",
@@ -72,14 +73,14 @@ const jsonLd = {
               })
             }
           </time>
-          <span class="text-sm text-text-muted">{minutes} min read</span>
+          <span class="text-xs uppercase tracking-wider text-text-muted">{minutes} min read</span>
           {
             post.data.tags && post.data.tags.length > 0 && (
               <div class="flex gap-2">
                 {post.data.tags.map((tag: string) => (
                   <span
-                    class="text-xs px-2 py-0.5 rounded"
-                    style={`background-color: ${tagColor(tag)}33; color: ${tagColor(tag)}`}
+                    class="text-xs px-2 py-0.5 rounded-full border"
+                    style={`background-color: ${tagColor(tag)}1f; border-color: ${tagColor(tag)}55; color: ${tagColor(tag)}`}
                   >
                     {tag}
                   </span>
@@ -96,17 +97,15 @@ const jsonLd = {
         [&_p]:mb-6 [&_p]:leading-relaxed [&_p]:text-text
         [&_ul]:mb-6 [&_ul]:ml-6 [&_ul]:list-disc [&_ol]:mb-6 [&_ol]:ml-6 [&_ol]:list-decimal
         [&_li]:mb-2 [&_li]:text-text
-        [&_strong]:font-semibold [&_strong]:text-[#9ece6a]
-        [&_blockquote]:border-l-2 [&_blockquote]:border-accent [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-text-muted"
+        [&_strong]:font-semibold [&_strong]:text-text
+        [&_blockquote]:border-l-2 [&_blockquote]:border-accent [&_blockquote]:pl-4 [&_blockquote]:my-6 [&_blockquote]:italic [&_blockquote]:text-text-muted
+        [&_hr]:my-10 [&_hr]:border-secondary"
       >
         <Content />
       </div>
     </article>
-    </div>
 
-    <hr class="border-secondary my-12" />
-
-    <footer>
+    <footer class="mt-20 pt-10 border-t border-secondary flex justify-center">
       <Logo />
     </footer>
   </main>

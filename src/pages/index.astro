@@ -11,9 +11,11 @@ const posts = (await getCollection("blog")).sort(
 
 <Layout title="dryrun - Vasisht's blog" isHomePage={true} wide>
   <main>
-    <section class="flex flex-col">
+    <section>
+      <h1 class="title-card text-center mb-8">Contents</h1>
+      <div class="flex flex-col gap-3">
       {
-        posts.map((post) => (
+        posts.map((post, i) => (
           <Post
             title={post.data.title}
             description={post.data.description}
@@ -21,9 +23,11 @@ const posts = (await getCollection("blog")).sort(
             slug={post.slug}
             tags={post.data.tags}
             readTime={readingTime(post.body)}
+            chapter={posts.length - i}
           />
         ))
       }
+      </div>
     </section>
   </main>
 </Layout>

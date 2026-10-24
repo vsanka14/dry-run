@@ -1,55 +1,81 @@
+import type { CSSProperties } from "react";
 import { tagColor } from "../utils/tagColor";
+import { toRoman } from "../utils/roman";
+import { stampColor } from "../utils/stampColors";
 
 interface PostProps {
   title: string;
-  description: string;
+  description?: string;
   date: Date;
   slug: string;
   tags?: string[];
   readTime?: number;
+  chapter?: number;
 }
 
-export const Post = ({ title, date, slug, tags = [], readTime }: PostProps) => {
+// A compact storybook card: a tag-colored ribbon on top and a postage-stamp
+// chapter numeral.
+export const Post = ({
+  title,
+  description,
+  date,
+  slug,
+  tags = [],
+  readTime,
+  chapter,
+}: PostProps) => {
   const formattedDate = date.toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
   });
+  const colors = tags.length > 0 ? tags.map(tagColor) : ["#e8a0b4"];
+  const ribbon = `linear-gradient(90deg, ${colors
+    .map((c, i) => `${c} ${(i / colors.length) * 100}% ${((i + 1) / colors.length) * 100}%`)
+    .join(", ")})`;
 
   return (
-    <div className="flex items-baseline gap-2.5 py-2">
-      <span aria-hidden className="text-xs text-accent select-none leading-none">
-        ❯
-      </span>
-      <div className="flex flex-col gap-1.5">
-        <a
-          href={`/blog/${slug}`}
-          className="text-text no-underline hover:text-accent hover:underline underline-offset-4 transition-colors"
+    <a
+      href={`/blog/${slug}`}
+      className="group relative flex items-center gap-5 overflow-hidden rounded-md border border-secondary bg-secondary/90 px-5 pt-5 pb-4 text-text transition-all duration-300 hover:-translate-y-0.5 hover:border-text-muted/30 hover:bg-secondary hover:no-underline"
+    >
+      <span aria-hidden className="absolute inset-x-0 top-0 h-1" style={{ background: ribbon }} />
+      {chapter && (
+        <span
+          aria-hidden
+          className="stamp shrink-0"
+          style={{ "--stamp-color": stampColor(chapter) } as CSSProperties}
         >
+          {toRoman(chapter)}
+        </span>
+      )}
+      <div className="min-w-0 flex-1">
+        <h2 className="text-lg font-semibold leading-snug transition-colors group-hover:text-accent">
           {title}
-        </a>
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
-          <time className="text-xs text-text-muted whitespace-nowrap">
-            {formattedDate}
-          </time>
-          {readTime && (
-            <span className="text-xs text-text-muted whitespace-nowrap">
-              {readTime} min read
+        </h2>
+        {description && (
+          <p className="mt-1 text-sm text-text-muted line-clamp-1">{description}</p>
+        )}
+        <div className="mt-2.5 flex items-center gap-2 text-[0.7rem] uppercase tracking-wider text-text-muted">
+          {tags.length > 0 && (
+            <span className="whitespace-nowrap normal-case tracking-normal">
+              {tags.map((tag, i) => (
+                <span key={tag}>
+                  {i > 0 && <span className="text-text-muted/50"> · </span>}
+                  <span style={{ color: tagColor(tag) }}>{tag}</span>
+                </span>
+              ))}
             </span>
           )}
-          {tags.map((tag) => (
-            <span
-              key={tag}
-              className="text-xs px-2 py-0.5 rounded"
-              style={{
-                backgroundColor: `${tagColor(tag)}33`,
-                color: tagColor(tag),
-              }}
-            >
-              {tag}
-            </span>
-          ))}
+          <span aria-hidden className="flex-1" />
+          <time className="whitespace-nowrap">{formattedDate}</time>
+          {readTime && (
+            <>
+              <span aria-hidden className="text-text-muted/50">·</span>
+              <span className="whitespace-nowrap">{readTime} min</span>
+            </>
+          )}
         </div>
       </div>
-    </div>
+    </a>
   );
 };

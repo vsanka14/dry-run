@@ -46,18 +46,25 @@
 }
 
 @theme {
-  /* Tokyo Night (Night) palette */
-  --color-primary: #0d0d14;
-  --color-secondary: #24283b;
-  --color-accent: #bb9af7;
-  --color-text: #c0caf5;
-  --color-text-muted: #a9b1d6;
+  /* Grand Budapest after dark: deep plum-black, cream text, Mendl's pink */
+  --color-primary: #0f0c11;
+  --color-secondary: #1b161d;
+  --color-accent: #e8a0b4;
+  --color-text: #f1e6dc;
+  --color-text-muted: #a8999f;
+
+  /* Supporting accents, used sparingly */
+  --color-mustard: #e3b04b;
+  --color-plum: #cfa8e0;
 
   /* Code block colors */
-  --color-code-bg: #1f2335;
+  --color-code-bg: #151117;
 
   /* Font */
   --font-sans: "Source Sans Pro", system-ui, sans-serif;
+  --font-display:
+    "Futura", "Futura PT", "Century Gothic", "Avenir Next", "Trebuchet MS",
+    sans-serif;
   --font-mono: "JetBrains Mono", "Fira Code", monospace;
 }
 
@@ -70,9 +77,15 @@
     @apply font-sans text-text antialiased;
   }
 
+  h1,
+  h2,
+  h3 {
+    @apply font-sans font-semibold tracking-tight;
+  }
+
   /* Code blocks */
   pre {
-    @apply overflow-x-auto my-6 md:my-8 p-3 md:p-4 rounded-lg text-sm;
+    @apply overflow-x-auto my-6 md:my-8 p-3 md:p-4 rounded-md text-sm border border-secondary;
     background-color: var(--color-code-bg) !important;
   }
 
@@ -82,7 +95,7 @@
 
   /* Inline code */
   :not(pre) > code {
-    @apply bg-secondary font-mono text-[#e0af68] px-1.5 py-0.5 text-sm rounded;
+    @apply bg-secondary font-mono text-mustard px-1.5 py-0.5 text-sm rounded;
   }
 
   ::selection {
@@ -90,52 +103,121 @@
   }
 
   a {
-    @apply text-accent hover:underline transition-colors;
+    @apply text-accent hover:underline underline-offset-4 transition-colors;
   }
 }
 
-/* Logo code line animations - pulse/glow effect */
-.code-line-1,
-.code-line-2,
-.code-line-3 {
-  transition: stroke-opacity 0.3s ease, stroke-width 0.3s ease, stroke 0.3s ease;
-  stroke-opacity: 0.7;
+/* Computer logo: on hover, the code is traced line by line and the cursor blinks */
+.code-line {
+  transition: fill 0.2s ease, opacity 0.2s ease;
 }
 
-.group:hover .code-line-1 {
-  stroke: #9ece6a;
-  stroke-opacity: 1;
-  stroke-width: 2.5;
-  transition-delay: 0s;
+.group:hover .code-line {
+  animation: code-trace 1.5s ease-in-out infinite;
 }
 
 .group:hover .code-line-2 {
-  stroke: #9ece6a;
-  stroke-opacity: 1;
-  stroke-width: 2.5;
-  transition-delay: 0.05s;
+  animation-delay: 0.25s;
 }
 
 .group:hover .code-line-3 {
-  stroke: #9ece6a;
-  stroke-opacity: 1;
-  stroke-width: 2.5;
-  transition-delay: 0.1s;
+  animation-delay: 0.5s;
 }
 
-/* Logo text hover */
+.group:hover .code-cursor {
+  animation: code-cursor-blink 0.8s steps(1) infinite;
+}
+
+@keyframes code-trace {
+  0%,
+  40%,
+  100% {
+    opacity: 0.55;
+  }
+  15% {
+    opacity: 1;
+    fill: #f1e6dc;
+  }
+}
+
+@keyframes code-cursor-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Computer logo: on a route change, the screen collapses to a bright line, then
+   to a dot, then opens on the new channel */
+.crt-screen {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.is-tuning .crt-screen {
+  animation: crt-switch 0.85s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.is-tuning .crt-glow {
+  animation: crt-glow 0.85s linear;
+}
+
+@keyframes crt-switch {
+  0% {
+    transform: scale(1, 1);
+  }
+  25% {
+    transform: scale(1, 0.08);
+  }
+  40%,
+  52% {
+    transform: scale(0.06, 0.08);
+  }
+  68% {
+    transform: scale(1, 0.08);
+  }
+  88% {
+    transform: scale(1, 1.06);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+@keyframes crt-glow {
+  0% {
+    opacity: 0;
+  }
+  22%,
+  70% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0.35;
+  }
+  86% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .group:hover .code-line,
+  .group:hover .code-cursor,
+  .is-tuning .crt-screen,
+  .is-tuning .crt-glow {
+    animation: none;
+  }
+}
+
 .logo-text {
   transition: color 0.3s ease;
 }
 
-.group:hover .logo-text {
-  color: var(--color-accent);
-}
-
 /*
- * Background gradient sampled from the pixel-art night-city reflection scene
- * (navy sky -> indigo -> purple clouds -> mauve water -> blue), fixed behind
- * the frosted content panels.
+ * Retro tech wallpaper: a faint repeating tile of pastel line icons, soft CRT
+ * scanlines, and a vignette that keeps the reading column calm.
  */
 body::before {
   content: "";
@@ -143,25 +225,121 @@ body::before {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background:
-    linear-gradient(rgba(4, 5, 11, 0.85), rgba(4, 5, 11, 0.85)),
-    linear-gradient(
+}
+/* Shared by the page and the view-transition backdrop behind the marquee band */
+:root {
+  --wallpaper:
+    radial-gradient(
+      ellipse 60% 75% at 50% 45%,
+      rgb(15 12 17 / 0.92) 0%,
+      rgb(15 12 17 / 0.45) 70%,
+      rgb(15 12 17 / 0) 100%
+    ),
+    repeating-linear-gradient(
       to bottom,
-    #000b21 0%,
-    #01091d 7%,
-    #010626 13%,
-    #02073b 20%,
-    #040b50 27%,
-    #0d0e61 33%,
-    #1b117e 40%,
-    #321184 47%,
-    #491a63 53%,
-    #120f44 60%,
-    #3e2563 67%,
-    #834b7a 73%,
-    #6f4878 80%,
-    #463577 87%,
-    #2a2b72 93%,
-    #1e266d 100%
-  );
+      rgb(241 230 220 / 0.018) 0 1px,
+      transparent 1px 3px
+    ),
+    url("/wallpaper.svg") 0 0 / 240px 240px repeat,
+    var(--color-primary);
+}
+body::before {
+  background: var(--wallpaper);
+}
+::view-transition {
+  background: var(--wallpaper);
+}
+
+/* Small-caps label, like a title card */
+.title-card {
+  @apply font-display font-normal text-xs uppercase tracking-[0.35em] text-text-muted;
+}
+
+/* Postage stamp with perforated edges, for chapter numerals */
+.stamp {
+  --r: 2px;
+  @apply inline-flex items-center justify-center font-display text-xs tracking-widest text-primary;
+  min-width: 2.6rem;
+  height: 3rem;
+  padding: calc(2.5 * var(--r)) calc(3 * var(--r));
+  background: var(--stamp-color, var(--color-accent));
+  mask:
+    radial-gradient(var(--r), #0000 97%, #000) round calc(-1.5 * var(--r))
+      calc(-1.5 * var(--r)) / calc(3 * var(--r)) calc(3 * var(--r)),
+    linear-gradient(#000 0 0) no-repeat 50% / calc(100% - 3 * var(--r))
+      calc(100% - 3 * var(--r));
+  transition: transform 0.3s ease;
+}
+
+.group:hover .stamp {
+  transform: rotate(-4deg);
+}
+
+/*
+ * Route transitions: a vertical crane shot. Going deeper, the set rises past
+ * the camera; returning to the contents, it sinks back down.
+ */
+@keyframes crane-rise-out {
+  to {
+    transform: translateY(-100vh);
+  }
+}
+@keyframes crane-rise-in {
+  from {
+    transform: translateY(100vh);
+  }
+}
+@keyframes crane-sink-out {
+  to {
+    transform: translateY(100vh);
+  }
+}
+@keyframes crane-sink-in {
+  from {
+    transform: translateY(-100vh);
+  }
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.85s;
+  animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+  animation-fill-mode: both;
+}
+::view-transition-old(root) {
+  animation-name: crane-rise-out;
+}
+::view-transition-new(root) {
+  animation-name: crane-rise-in;
+}
+html[data-astro-transition="back"]::view-transition-old(root) {
+  animation-name: crane-sink-out;
+}
+html[data-astro-transition="back"]::view-transition-new(root) {
+  animation-name: crane-sink-in;
+}
+
+/*
+ * The top band is the fixed proscenium: the set slides away beneath it, so the
+ * moving pages never pass over the logo.
+ */
+::view-transition-image-pair(root) {
+  mask-image: linear-gradient(to bottom, transparent 0 105px, #000 145px);
+}
+@media (min-width: 768px) {
+  ::view-transition-image-pair(root) {
+    mask-image: linear-gradient(to bottom, transparent 0 135px, #000 180px);
+  }
+}
+
+/* The marquee stays locked to the frame while the set moves */
+::view-transition-group(marquee) {
+  animation: none;
+  z-index: 10;
+}
+::view-transition-old(marquee) {
+  display: none;
+}
+::view-transition-new(marquee) {
+  animation: none;
 }
